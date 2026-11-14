@@ -16,7 +16,7 @@ than can be said for most of us at room temperature.
 
 ## What it is
 
-- A ~3M-parameter transformer trained on Maxwell's books (in English) and Boltzmann's lectures on gas theory (in his
+- A 3M-parameter transformer trained on Maxwell's books (in English) and Boltzmann's lectures on gas theory (in his
   German original). One model, two physicists, two languages.
 - It runs on an ESP32-S3 (the runtime from [esp32-ai](https://github.com/moudrkat/esp32-ai)). It samples every word with
   `softmax(logits / T)`: the Maxwell–Boltzmann distribution, applied to Maxwell and Boltzmann.
@@ -33,10 +33,33 @@ than can be said for most of us at room temperature.
 - Umlauts are written ae, oe, ue, ss. The chip is ASCII, like a typewriter from 1896.
 - With about a million words, a model this size learns a fair amount by heart. Cold, it loops rather than recites.
 
+## On the chip
+
+An ESP32-S3 with a 128x64 OLED, and an SHT40 clicked onto the display's I2C cable. The model is 3M parameters, 1.6 MB
+in int4. Flash it with esp32-ai:
+
+```
+ROOM=1 ARTIFACTS=artifacts/maxwell scripts/deploy.sh tinystories
+```
+
+It writes paragraph after paragraph on its own, every word sampled at the temperature of the room
+(`T = 0.1 + 0.15 * (degrees C - 18)`: 22 C gives 0.7, a warm hand around 30 C gives about 1.9). The reading heads
+each paragraph on the screen. Type a line over serial and it continues that instead.
+
+What they said on the bench, same start, int4 weights:
+
+| T | Maxwell |
+|---|---|
+| 0.1 | The temperature of a body is the same as that of the body, and that the temperature of the body is the same as that of the body, and that... |
+| 0.6 | The temperature of a body is therefore at the temperature T will be the same as that of the body, and the temperature of the air becomes the same as that of the hotter evaporation... |
+| 1.6 | The temperature of a body is therefore at maciprocal period dannric will haben place whose continuity following tange... |
+
+Cold Maxwell discovers a tautology and can't get out. Hot Maxwell starts speaking German. Boltzmann, warmed up,
+returns the favour: *"...auf die Volumeneinheit abgeleitet werden kann. Direction of g; ..."*
+
 ## Status
 
-Work in progress. Data and training: done. The chip firmware (temperature from the SHT40) and an interactive page:
-coming.
+Data, training, the chip firmware: done, not yet tried on a real thermometer. An interactive page: coming.
 
 ## Run it
 
