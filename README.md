@@ -47,6 +47,13 @@ Turn the temperature up and the entropy of each word climbs from almost nothing 
 The phase boundaries are where the text changes character, read off by eye: loops below, Maxwell in the middle, two
 languages above.
 
+Physicists have looked at this properly. Nakaishi, Nishikawa and Hukushima
+([arXiv:2406.05335](https://arxiv.org/abs/2406.05335)) find a phase transition in the text a language model
+generates as its temperature changes: repetitive structures below, incomprehensible text above, and at the critical
+point, statistics like those of natural language. Mikhaylovskiy ([arXiv:2503.06330](https://arxiv.org/abs/2503.06330))
+sorts generated text into solid, critical state and gas. They did it with real models and real statistics. This one
+does it with a hand.
+
 ![German share in paragraphs that start in English, against temperature](charts/mixing.svg)
 
 ### Maxwell's demon
@@ -68,6 +75,23 @@ measured, and forgetting costs energy). Ours is powered over USB, so the books b
 
 And the other thing Boltzmann is famous for: two gases mixing. Cold, Maxwell stays English. Hot, Boltzmann's German
 leaks in, from 1% of his small words at T = 0.05 to 22% at T = 2. Warm Boltzmann returns the favour: *"...auf die Volumeneinheit abgeleitet werden kann. Direction of g; ..."*
+
+### The other softmax
+
+The interview question was about attention, and the thermometer is wired to the output. So what about the softmax
+inside? Every row of the attention matrix is a Boltzmann distribution over the earlier words, and it has the same two
+ways to fail: too hot and a word looks at everything equally, too cold and it stares at one word and ignores the rest.
+
+Bruno, Chen, Lin, Polyanskiy and Rigollet ([arXiv:2605.08505](https://arxiv.org/abs/2605.08505)) ask exactly this,
+for long contexts: how must the inverse temperature of attention grow with the number of words, so that attention
+neither melts into "uniform averaging" nor "collapses onto the single closest key"? They find a critical scale in
+between, where a handful of words keep the weight. Below it, they show, attention acts approximately like a heat
+equation run backwards. Maxwell would have had opinions.
+
+On this model, putting a temperature `tau` into the attention softmax (`attention.py`; 1 is what it was trained with)
+moves the entropy of an attention row from 0.4 bits at tau = 1/8, through 2.8 at 1, to 4.8 at 8. The matrix freezes and
+melts as it should. The text minds much less than it does at the output: hot attention loses the thread before it
+loses the grammar. That is eight paragraphs per point, read by eye, so a first look and not a result.
 
 ## Build it
 
