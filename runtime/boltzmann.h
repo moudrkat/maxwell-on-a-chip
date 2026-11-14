@@ -9,11 +9,11 @@
 
 #include <math.h>
 
-#ifndef ROOM_T_AT_18
-#define ROOM_T_AT_18 0.1f
+#ifndef ROOM_T_NORMAL
+#define ROOM_T_NORMAL 0.7f             // the room the chip woke up in is "normal": liquid Maxwell
 #endif
 #ifndef ROOM_T_PER_DEGREE
-#define ROOM_T_PER_DEGREE 0.15f        // 22 C -> 0.7, 26 C -> 1.3, 30 C -> 1.9
+#define ROOM_T_PER_DEGREE 0.2f         // 3 C colder -> 0.1 (solid), 6 C warmer -> 1.9 (gas)
 #endif
 #ifndef ROOM_T_MIN
 #define ROOM_T_MIN 0.05f
@@ -25,9 +25,10 @@
 #define DEMON_K 4
 #endif
 
-// degrees Celsius -> sampling temperature
-static float room_to_T(float celsius) {
-  float T = ROOM_T_AT_18 + (celsius - 18.f) * ROOM_T_PER_DEGREE;
+// degrees Celsius -> sampling temperature, relative to the room at power-up (normal), so it works in any flat:
+// what matters is warmer or colder than where they woke up
+static float room_to_T(float celsius, float normal) {
+  float T = ROOM_T_NORMAL + (celsius - normal) * ROOM_T_PER_DEGREE;
   return T < ROOM_T_MIN ? ROOM_T_MIN : T > ROOM_T_MAX ? ROOM_T_MAX : T;
 }
 

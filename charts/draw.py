@@ -14,8 +14,8 @@ plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 11, "axes.edgeco
 
 # 1. the same softmax at three temperatures
 fig, axes = plt.subplots(1, 3, figsize=(11, 3.6), sharey=True)
-for ax, (T, col, label) in zip(axes, [("0.1", COLD, "T = 0.1  (cold window)"), ("0.7", ROOM, "T = 0.7  (22 °C room)"),
-                                      ("1.9", HOT, "T = 1.9  (warm hand)")]):
+for ax, (T, col, label) in zip(axes, [("0.1", COLD, "T = 0.1  (3 °C colder)"), ("0.7", ROOM, "T = 0.7  (the room)"),
+                                      ("1.9", HOT, "T = 1.9  (6 °C warmer: a hand)")]):
     rows = d["dist"][T][:8]
     names = [w.replace("<|endoftext|>", "(end)").strip() or "␣" for w, _ in rows]
     ax.bar(range(len(rows)), [p for _, p in rows], color=col, width=0.72, edgecolor="white", linewidth=2)
@@ -44,8 +44,8 @@ ax.axhline(11, color=MUTE, linewidth=1, linestyle=(0, (4, 4)))
 ax.text(0.02, 10.75, "11 bits: every word equally likely (2048 of them)", color=MUTE, fontsize=9, va="top")
 ax.set_xlabel("sampling temperature T"); ax.set_ylabel("entropy of each word (bits)")
 ax.set_xlim(0, 2.05); ax.set_ylim(0, 11.5)
-top = ax.secondary_xaxis("top", functions=(lambda t: 18 + (t - 0.1) / 0.15, lambda c: 0.1 + 0.15 * (c - 18)))
-top.set_xlabel("room temperature on the chip (°C)", color=MUTE); top.tick_params(colors=MUTE)
+top = ax.secondary_xaxis("top", functions=(lambda t: 22 + (t - 0.7) / 0.2, lambda c: 0.7 + 0.2 * (c - 22)))
+top.set_xlabel("room temperature on the chip (°C), if it woke up at 22", color=MUTE); top.tick_params(colors=MUTE)
 ax.grid(color=GRID, linewidth=0.8); ax.set_axisbelow(True)
 ax.set_title("Temperature in, entropy out", color=INK, fontsize=13, loc="left", pad=34)
 fig.savefig(HERE / "entropy.svg", bbox_inches="tight"); plt.close(fig)

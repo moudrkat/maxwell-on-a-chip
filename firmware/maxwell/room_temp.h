@@ -1,8 +1,8 @@
 // room_temp.h -- the room sets the model's temperature, and the BOOT button lets Maxwell's demon in.
 //
-// An SHT40 on the display's I2C bus reads the air; every word is sampled at room_to_T(degrees) (runtime/boltzmann.h).
-// A cold room makes the model stiff (it loops), a warm hand on the sensor makes it ramble. With no sensor answering,
-// it stays at 22 C. The chip writes paragraph after paragraph on its own; a typed line starts the next one.
+// An SHT40 on the display's I2C bus reads the air; every word is sampled at room_to_T(degrees, normal)
+// (runtime/boltzmann.h), where normal is the first reading after power-up. Colder than that makes the model stiff (it
+// loops), a warm hand on the sensor makes it ramble. With no sensor answering, it stays at normal. The chip writes paragraph after paragraph on its own; a typed line starts the next one.
 // The top line of the screen always shows the reading, T and the phase, or DEMON while the demon is at the door.
 #ifndef ROOM_TEMP_H
 #define ROOM_TEMP_H
@@ -15,6 +15,7 @@
 #endif
 
 static float room_c = 22.f;            // last reading, degrees C
+static float room_c0 = 22.f;           // the first reading after power-up: this room is "normal"
 static bool room_seen = false;         // has the SHT40 ever answered
 static uint8_t room_addr = 0x44;       // SHT40-AD1B answers at 0x44, SHT40-BD1B at 0x45
 static unsigned long room_at = 0;
@@ -28,6 +29,7 @@ static bool sht_try(uint8_t addr) {
   uint16_t t = (Wire.read() << 8) | Wire.read();
   Wire.read(); Wire.read(); Wire.read(); Wire.read();
   room_c = -45.f + 175.f * t / 65535.f;
+  if (!room_seen) room_c0 = room_c;    // calibrate to the room it woke up in
   return true;
 }
 static void room_read() {
@@ -39,7 +41,7 @@ static void room_read() {
     if (sht_try(other)) { room_addr = other; room_seen = true; }
   }
 }
-static float room_softmax_temp() { room_read(); return room_to_T(room_c); }
+static float room_softmax_temp() { room_read(); return room_to_T(room_c, room_c0); }
 
 // the BOOT button toggles the demon; called between words
 static void room_poll_demon() {

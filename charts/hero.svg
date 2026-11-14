@@ -14,9 +14,9 @@
 <defs><linearGradient id="g" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#4a90d9"/><stop offset="0.5" stop-color="#3f9e6b"/><stop offset="1" stop-color="#e8743b"/></linearGradient></defs>
 <rect x="64" y="200" width="12" height="400" rx="6" fill="url(#g)"/>
 <line x1="84" y1="260" x2="110" y2="260" stroke="#e8743b" stroke-width="3"/>
-<text x="116" y="267" font-size="20" font-weight="700" fill="#e8743b">30 °C</text>
+<text x="116" y="267" font-size="20" font-weight="700" fill="#e8743b">28 °C</text>
 <rect x="190" y="205" width="430" height="112" rx="10" fill="#0d0f12"/>
-<text x="206" y="231" class="m" font-size="15" fill="#7fd3ff">30.0C T=1.9 GAS</text>
+<text x="206" y="231" class="m" font-size="15" fill="#7fd3ff">28.0C T=1.9 GAS</text>
 <text x="206" y="257" class="m" font-size="15" fill="#f1f1f1">The temperature of a body is therefore at</text>
 <text x="206" y="278" class="m" font-size="15" fill="#f1f1f1">macipro will denote doch dann h will</text>
 <text x="206" y="299" class="m" font-size="15" fill="#f1f1f1">haben diese Zu definuchaetracht trotz...</text>
@@ -52,9 +52,9 @@
 <text x="930" y="390" font-size="38" font-weight="700" fill="#3f9e6b">2.7 bits</text>
 <text x="930" y="416" font-size="15" fill="#5d5f66">entropy of each word (liquid)</text>
 <line x1="84" y1="530" x2="110" y2="530" stroke="#4a90d9" stroke-width="3"/>
-<text x="116" y="537" font-size="20" font-weight="700" fill="#4a90d9">18 °C</text>
+<text x="116" y="537" font-size="20" font-weight="700" fill="#4a90d9">19 °C</text>
 <rect x="190" y="475" width="430" height="112" rx="10" fill="#0d0f12"/>
-<text x="206" y="501" class="m" font-size="15" fill="#7fd3ff">18.0C T=0.1 SOLID</text>
+<text x="206" y="501" class="m" font-size="15" fill="#7fd3ff">19.0C T=0.1 SOLID</text>
 <text x="206" y="527" class="m" font-size="15" fill="#f1f1f1">The temperature of a body is the same</text>
 <text x="206" y="548" class="m" font-size="15" fill="#f1f1f1">as that of the body, and that the</text>
 <text x="206" y="569" class="m" font-size="15" fill="#f1f1f1">temperature of the body is the same as...</text>

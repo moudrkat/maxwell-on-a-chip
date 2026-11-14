@@ -1,9 +1,9 @@
 // No chip? The same model file, the same C runtime and the same sampling code (runtime/boltzmann.h) on a computer.
 //
 //   cc -O2 -o host/maxwell host/maxwell.c -lm
-//   host/maxwell 22            # degrees Celsius: one paragraph per start at that room temperature
-//   host/maxwell 30 demon      # ... with Maxwell's demon at the door
-//   host/maxwell 18 "" 7       # another seed
+//   host/maxwell 22            # degrees Celsius, for a chip that woke up at 22: one paragraph per start
+//   host/maxwell 28 demon      # ... with Maxwell's demon at the door
+//   host/maxwell 19 "" 7       # another seed
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
   int eot = -1;
   for (int v = 0; v < VOCAB_N; v++)
     if (VOCAB_OFF[v + 1] - VOCAB_OFF[v] == 13 && !memcmp(VOCAB_BLOB + VOCAB_OFF[v], "<|endoftext|>", 13)) eot = v;
-  float T = room_to_T(celsius);
+  float T = room_to_T(celsius, 22.f);   // as if the chip had woken up in a 22 C room
   printf("%.1f C  T=%.2f  %s%s\n\n", celsius, T, room_phase(T), demon ? "  (demon)" : "");
   double all_bits = 0; int all_n = 0;
   for (int k = 0; k < ROOM_STARTS_N; k++) {

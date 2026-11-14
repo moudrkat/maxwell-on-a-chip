@@ -102,17 +102,19 @@ arduino-cli lib install "Adafruit SSD1306" "Adafruit GFX Library"
 **Use.** Nothing. It starts writing. To change their mood:
 
 - warm the SHT40 in your hand (it takes half a minute; thermometers are not in a hurry): they ramble, then switch languages;
-- cool it below about 20 C (a cold window in November, or a cold glass next to it; keep it dry): they get stuck in loops;
+- cool it by three degrees (a window in November, or a cold glass next to it; keep it dry): they get stuck in loops;
 - press the BOOT button: Maxwell's demon, on and off;
 - type a line into the serial monitor (115200 baud) and they continue your sentence instead.
 
-The temperature map: `T = 0.1 + 0.15 * (degrees C - 18)`, between 0.05 and 2. A 22 C room gives 0.7, a warm hand
-around 30 C gives about 1.9. Change it in `firmware/maxwell/room_temp.h` if your flat runs hotter than mine.
+The thermometer calibrates itself: whatever room the chip wakes up in is "normal" (T = 0.7, liquid Maxwell), and
+every degree warmer or colder moves T by 0.2, between 0.05 and 2. Three degrees colder and they freeze; a hand, six
+degrees warmer, and they evaporate. So it works in a cold flat and in a heat wave, and you reset "normal" by
+pressing RESET. Like the rest of us, they think the room they woke up in is how the world is.
 
 **If it doesn't:**
 
 - screen dark: SDA and SCL swapped, or the OLED is an SH1106 (set `OLED_CONTROLLER` in `firmware/maxwell/display.h`);
-- the serial log says "no SHT40": the sensor isn't answering at 0x44 or 0x45, so they assume a polite 22 C forever. Check the cable;
+- the serial log says "no SHT40": the sensor isn't answering at 0x44 or 0x45, so they assume a polite 22 C forever and never change. Check the cable;
 - flashing fails: hold BOOT, press RESET, let go of BOOT, try again.
 
 ## The small print
@@ -137,8 +139,8 @@ The same model file, C runtime and sampling code, on a computer:
 
 ```
 cc -O2 -o host/maxwell host/maxwell.c -lm
-host/maxwell 18          # degrees Celsius
-host/maxwell 30 demon
+host/maxwell 19          # degrees Celsius, for a chip that woke up at 22
+host/maxwell 28 demon
 ```
 
 ## Do it all yourself
