@@ -10,6 +10,14 @@
 #include <Wire.h>
 #include "../../runtime/boltzmann.h"
 
+// The SHT40 normally shares the display's two I2C pins. If those are taken (the display wired straight to the board, no
+// breadboard), give the sensor its own two pins: SHT=4,5 ./flash.sh  (SDA, SCL), and it gets the second I2C bus.
+#if defined(SHT_SDA) && defined(SHT_SCL)
+#define ROOM_WIRE Wire1
+#else
+#define ROOM_WIRE Wire
+#endif
+
 #ifndef PIN_DEMON
 #define PIN_DEMON 0                    // the BOOT button on the dev board: press to let the demon in or out
 #endif
@@ -22,12 +30,16 @@ static unsigned long room_at = 0;
 static bool room_demon = false;
 
 static bool sht_try(uint8_t addr) {
-  Wire.beginTransmission(addr); Wire.write(0xFD);
-  if (Wire.endTransmission() != 0) return false;
+#if defined(SHT_SDA) && defined(SHT_SCL)
+  static bool begun = false;
+  if (!begun) { ROOM_WIRE.begin(SHT_SDA, SHT_SCL, 100000); begun = true; }
+#endif
+  ROOM_WIRE.beginTransmission(addr); ROOM_WIRE.write(0xFD);
+  if (ROOM_WIRE.endTransmission() != 0) return false;
   delay(10);
-  if (Wire.requestFrom(addr, (uint8_t)6) != 6) return false;
-  uint16_t t = (Wire.read() << 8) | Wire.read();
-  Wire.read(); Wire.read(); Wire.read(); Wire.read();
+  if (ROOM_WIRE.requestFrom(addr, (uint8_t)6) != 6) return false;
+  uint16_t t = (ROOM_WIRE.read() << 8) | ROOM_WIRE.read();
+  ROOM_WIRE.read(); ROOM_WIRE.read(); ROOM_WIRE.read(); ROOM_WIRE.read();
   room_c = -45.f + 175.f * t / 65535.f;
   if (!room_seen) room_c0 = room_c;    // calibrate to the room it woke up in
   return true;

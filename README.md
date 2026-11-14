@@ -119,6 +119,9 @@ loses the grammar. That is eight paragraphs per point, read by eye, so a first l
 If both modules have a μŠup connector (LaskaKit's do), click a μŠup cable from the SHT40 into the OLED and wire only
 the OLED to the board. Never 5 V on these pins: Maxwell runs at 3.3 V.
 
+No breadboard, and the display already sits on pins 18 and 8? Give the thermometer two pins of its own, say 4 and 5
+(SDA to 4, SCL to 5), and flash with `SHT=4,5 ./flash.sh`.
+
 **Flash.** Everything is in this repo, the model too:
 
 ```
