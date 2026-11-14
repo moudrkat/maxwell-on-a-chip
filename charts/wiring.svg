@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 470" role="img" aria-label="Wiring: ESP32-S3, OLED and SHT40 on one I2C bus">
+  <rect width="960" height="470" rx="14" fill="#f6f6f8"/>
+  <style>text{fill:#1b1b1f;font:13px system-ui,-apple-system,Segoe UI,sans-serif}.s{font-size:11.5px;fill:#5d5f66}.b{font-weight:700}</style>
+
+  <!-- ESP32-S3 board -->
+  <rect x="70" y="150" width="250" height="150" rx="10" fill="#1d6b45"/>
+  <rect x="150" y="185" width="90" height="70" rx="6" fill="#c9c9cf"/><text x="163" y="226" class="b">ESP32-S3</text>
+  <rect x="40" y="205" width="34" height="40" rx="5" fill="#9a9aa2"/><text x="20" y="326" class="s">USB to your laptop</text>
+  <g fill="#e8c547"><circle cx="300" cy="175" r="6"/><circle cx="300" cy="205" r="6"/><circle cx="300" cy="235" r="6"/><circle cx="300" cy="265" r="6"/></g>
+  <text x="250" y="179" style="fill:#fff">3V3</text><text x="250" y="209" style="fill:#fff">GND</text>
+  <text x="252" y="239" style="fill:#fff">18</text><text x="258" y="269" style="fill:#fff">8</text>
+  <text x="70" y="346" class="s">N16R8: the 8 MB of PSRAM is where the two physicists live</text>
+
+  <!-- OLED -->
+  <rect x="560" y="60" width="210" height="150" rx="10" fill="#2471a3"/>
+  <rect x="578" y="78" width="174" height="96" rx="4" fill="#0a0a0a"/>
+  <text x="586" y="96" style="fill:#7fd3ff;font-size:11px">29.8C T=1.78 GAS</text>
+  <text x="586" y="116" style="fill:#fff;font-size:11px">The temperature of a</text>
+  <text x="586" y="131" style="fill:#fff;font-size:11px">body is therefore at</text>
+  <text x="586" y="146" style="fill:#fff;font-size:11px">maciprocal dann haben</text>
+  <text x="586" y="161" style="fill:#fff;font-size:11px">place whose ...</text>
+  <rect x="770" y="120" width="16" height="12" rx="2" fill="#f4f4f4" stroke="#888"/><text x="792" y="131" class="s">μŠup</text>
+  <g fill="#e8c547"><circle cx="580" cy="194" r="5"/><circle cx="610" cy="194" r="5"/><circle cx="640" cy="194" r="5"/><circle cx="670" cy="194" r="5"/></g>
+  <text x="567" y="187" style="fill:#fff;font-size:9.5px">VCC  GND  SDA  SCL</text>
+  <text x="560" y="48" class="b">OLED 128×64 (SSD1306)</text>
+
+  <!-- SHT40 + hand -->
+  <rect x="815" y="290" width="70" height="50" rx="7" fill="#7d3c98"/><rect x="836" y="303" width="26" height="22" rx="3" fill="#d8d0e0"/>
+  <text x="815" y="362" class="b">SHT40</text><text x="815" y="378" class="s">the thermostat on</text><text x="815" y="393" class="s">their personalities</text>
+  <rect x="801" y="314" width="16" height="12" rx="2" fill="#f4f4f4" stroke="#888"/>
+  <path d="M786 126 C 840 160, 760 290, 805 320" fill="none" stroke="#c9c9cf" stroke-width="5" stroke-linecap="round"/>
+  <text x="676" y="262" class="s">one μŠup cable,</text><text x="676" y="277" class="s">if both have the</text><text x="676" y="292" class="s">little white plug</text>
+  <!-- a warm hand -->
+  <path d="M880 285 q30 -10 40 10 q8 20 -6 40 q-20 22 -40 10" fill="#f2c7a5" stroke="#c99a74" stroke-width="2"/>
+  <path d="M905 278 q4 -8 0 -16 M918 280 q5 -8 1 -16 M892 278 q4 -8 0 -16" stroke="#e8743b" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <text x="880" y="246" style="fill:#e8743b" class="b">~30 °C</text>
+
+  <!-- wires: board pins to OLED pins -->
+  <g fill="none" stroke-width="4" stroke-linecap="round">
+    <path d="M306 175 C 420 175, 470 240, 580 199" stroke="#d64541"/>
+    <path d="M306 205 C 420 205, 480 255, 610 199" stroke="#2c2c30"/>
+    <path d="M306 235 C 420 235, 490 270, 640 199" stroke="#2f6fbf"/>
+    <path d="M306 265 C 420 265, 500 285, 670 199" stroke="#e8c547"/>
+  </g>
+  <g class="s"><text x="360" y="160">3V3 → VCC (red)</text><text x="360" y="300">never 5 V: Maxwell runs at 3.3 V</text></g>
+  <text x="372" y="390" class="b">Four wires. The display and the thermometer share them:</text>
+  <text x="372" y="408" class="s">one I²C bus, three addresses. Click the SHT40 onto the OLED and you are done.</text>
+  <text x="372" y="430" class="s">VCC → 3V3 · GND → GND · SDA → 18 · SCL → 8</text>
+</svg>
