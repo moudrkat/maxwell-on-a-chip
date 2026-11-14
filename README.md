@@ -143,6 +143,13 @@ host/maxwell 19          # degrees Celsius, for a chip that woke up at 22
 host/maxwell 28 demon
 ```
 
+## Put your own dead physicist on a chip
+
+The books are a list: `books.txt`, archive.org identifiers, one per line. Swap them for anyone in the public domain
+(Darwin, Newton, Lovelace, your favourite alchemist) and run `./train.sh`, then `./flash.sh`. The sentences each
+paragraph starts with are in `runtime/boltzmann.h` (`ROOM_STARTS`); give your physicist a few of their own.
+If they turn out funnier than Maxwell, open a PR. I can take it.
+
 ## Do it all yourself
 
 ```
@@ -160,6 +167,10 @@ python measure.py runs/ple-mb-s0-best.pt && python charts/draw.py   # the charts
 | `host/` | the same code on a computer |
 | `train/` | the trainer and the int4 exporter |
 | `charts/` | the measurements and the pictures |
+
+## Want to help?
+
+See `CONTRIBUTING.md`: the short list of what is untested, and what I'd love to see. The first real thermometer is still up for grabs.
 
 ## Thanks
 

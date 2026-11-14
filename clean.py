@@ -1,6 +1,5 @@
-"""Maxwell's prose from the archive.org OCR of his books (Theory of Heat, The Scientific Papers, the Treatise on Electricity
-and Magnetism, Matter and Motion, the Elementary Treatise), and Boltzmann in his German original (Vorlesungen ueber
-Gastheorie I-II, Populaere Schriften), all public domain. Umlauts become ae/oe/ue/ss, since the chip is ASCII.
+"""Prose from the archive.org OCR of the books listed in books.txt (as shipped: Maxwell in English, Boltzmann in his
+German original, all public domain). Umlauts become ae/oe/ue/ss, since the chip is ASCII.
 
 Keeps running prose and drops what OCR makes of the rest: the publisher's adverts, page headers and numbers,
 equations and tables (lines that are mostly symbols), footnote markers. Rejoins words split across lines
@@ -66,20 +65,24 @@ def german_ascii(text):
     return text
 
 
+def books():
+    """books.txt: (identifier, times, start marker or None)."""
+    out = []
+    for line in (Path(__file__).parent / "books.txt").read_text().splitlines():
+        f = line.split("#")[0].split()
+        if f:
+            out.append((f[0], int(f[1]) if len(f) > 1 else 1, f[2] if len(f) > 2 else None))
+    return out
+
+
 def main():
-    paras = []
-    paras += clean((RAW / "theoryofheat00maxwuoft.txt").read_text(errors="ignore"), start="INTRODUCTION")
-    for v in ("scientificpapers01maxwuoft.txt", "scientificpapers02maxwuoft.txt", "treatiseonelectr01maxwrich.txt",
-              "treatiseonelectr02maxw.txt", "mattermotion00maxwuoft.txt", "elementarytreati00maxwuoft.txt"):
-        paras += clean((RAW / v).read_text(errors="ignore"))
-    n_max = len(paras)
-    for v in ("vorlesungenber01bolt.txt", "vorlesungenber02bolt.txt", "populreschrifte00boltgoog.txt"):   # in German
-        paras += clean(german_ascii((RAW / v).read_text(errors="ignore")))
-    n_bol = len(paras) - n_max
-    # two gases in more even amounts: Boltzmann is a sixth of the text, so his paragraphs go in twice (the mix ratio is
-    # a choice the model's distribution follows; README says it)
-    paras += paras[n_max:]
-    print(f"Maxwell {n_max:,} paragraphs (English), Boltzmann {n_bol:,} (German, original), Boltzmann taken twice")
+    once, again = [], []
+    for ident, times, start in books():
+        ps = clean(german_ascii((RAW / f"{ident}.txt").read_text(errors="ignore")), start=start)
+        print(f"{ident}: {len(ps):,} paragraphs" + (f", taken {times} times" if times > 1 else ""))
+        once += ps
+        again += ps * (times - 1)
+    paras = once + again
     OUT.write_text("\n".join(paras) + "\n")
     words = sum(len(p.split()) for p in paras)
     print(f"{len(paras):,} paragraphs, {words:,} words -> {OUT}")

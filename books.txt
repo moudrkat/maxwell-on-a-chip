@@ -1,0 +1,15 @@
+# The books the model is trained on: archive.org identifiers, one per line.
+#   identifier  [times]  [start]
+# times: how often its paragraphs go in (default 1). start: skip everything before the first line containing this word.
+# Swap these for anyone in the public domain and run ./train.sh: your own dead physicist on a chip.
+theoryofheat00maxwuoft 1 INTRODUCTION
+scientificpapers01maxwuoft
+scientificpapers02maxwuoft
+treatiseonelectr01maxwrich
+treatiseonelectr02maxw
+mattermotion00maxwuoft
+elementarytreati00maxwuoft
+# Boltzmann, in German; twice, so the two gases are more even
+vorlesungenber01bolt 2
+vorlesungenber02bolt 2
+populreschrifte00boltgoog 2
