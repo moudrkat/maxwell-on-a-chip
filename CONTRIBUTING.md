@@ -9,7 +9,7 @@ cc -O2 -o host/maxwell host/maxwell.c -lm && host/maxwell 22     # the chip's co
 arduino-cli compile --fqbn esp32:esp32:esp32s3:PartitionScheme=custom,PSRAM=opi,FlashSize=16M firmware/maxwell
 ```
 
-`host/maxwell 19`, `22` and `28` should print about 0.2, 2.8 and 8.8 bits per word. If your change moves those, say so
+`host/maxwell 19`, `22` and `28` should print about 0.2, 2.2 and 7.5 bits per word. If your change moves those, say so
 in the PR.
 
 **Things nobody has done yet**

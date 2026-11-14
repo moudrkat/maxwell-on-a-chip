@@ -45,7 +45,7 @@ def main():
             ids += enc.ids + [eot]
         np.array(ids, dtype=np.uint16).tofile(out / f"{name}.bin")
         counts[name] = len(ids)
-    manifest = {"source": "James Clerk Maxwell, Theory of Heat (1899) and The Scientific Papers (1890), archive.org OCR, clean.py",
+    manifest = {"source": "the books in books.txt, archive.org OCR, clean.py",
                 "paragraphs": len(paras), "tokens": counts, "vocab": args.vocab, "eot_id": eot,
                 "tokenizer_sha256": hashlib.sha256((out / "tokenizer.json").read_bytes()).hexdigest()}
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2))

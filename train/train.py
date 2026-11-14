@@ -92,6 +92,7 @@ def main():
     # Published experiments always pass --vocab; the default is for ad-hoc runs.
     ap.add_argument("--vocab", type=int, default=32768)
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--dropout", type=float, default=0.0)
     ap.add_argument("--tag", default="")
     # Another corpus prepared in the same layout (tokenizer.json, train.bin,
     # val.bin under vocab-N/) trains with the same code; only the root moves.
@@ -130,6 +131,7 @@ def main():
     model = make_model(args.arm, args.target_core, base, fixed_ffn=args.fixed_ffn).to(device)
     budget = model.param_budget()
     cfg = model.cfg
+    cfg.dropout = args.dropout
 
     # No weight decay on 1-D params (norms) or on lookup tables.
     decay, no_decay = [], []

@@ -32,7 +32,7 @@ static float room_to_T(float celsius, float normal) {
   return T < ROOM_T_MIN ? ROOM_T_MIN : T > ROOM_T_MAX ? ROOM_T_MAX : T;
 }
 
-// the phase the text is in at temperature T: frozen in loops, liquid Maxwell, a gas of two languages
+// the phase the text is in at temperature T: frozen stiff, liquid Maxwell, a gas of two languages
 static const char *room_phase(float T) { return T < 0.35f ? "SOLID" : T < 1.1f ? "LIQUID" : "GAS"; }
 
 // One word: sample from softmax(z / T) with u uniform in [0, 1). k > 0 lets only the k largest logits through.

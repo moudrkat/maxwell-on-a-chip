@@ -2,19 +2,23 @@
  "dist": {
   "0.1": [
    [
-    " the",
-    0.9997
+    " measured",
+    0.7562
    ],
    [
-    " that",
-    0.0003
+    " the",
+    0.2171
+   ],
+   [
+    " proportional",
+    0.0261
    ],
    [
     " therefore",
-    0.0
+    0.0005
    ],
    [
-    "<|endoftext|>",
+    " equal",
     0.0
    ],
    [
@@ -22,261 +26,257 @@
     0.0
    ],
    [
-    " equal",
-    0.0
-   ],
-   [
-    " found",
-    0.0
-   ],
-   [
-    " proportional",
-    0.0
-   ],
-   [
     " called",
     0.0
    ],
    [
-    " determined",
+    ",",
     0.0
    ],
    [
-    " expressed",
+    " greater",
     0.0
    ],
    [
     " to",
+    0.0
+   ],
+   [
+    " in",
+    0.0
+   ],
+   [
+    " numer",
     0.0
    ]
   ],
   "0.7": [
    [
+    " measured",
+    0.2522
+   ],
+   [
     " the",
-    0.3758
-   ],
-   [
-    " that",
-    0.1166
-   ],
-   [
-    " therefore",
-    0.0599
-   ],
-   [
-    "<|endoftext|>",
-    0.0576
-   ],
-   [
-    " a",
-    0.0448
-   ],
-   [
-    " equal",
-    0.0343
-   ],
-   [
-    " found",
-    0.0309
+    0.211
    ],
    [
     " proportional",
-    0.0285
+    0.156
+   ],
+   [
+    " therefore",
+    0.0894
+   ],
+   [
+    " equal",
+    0.0465
+   ],
+   [
+    " a",
+    0.0308
    ],
    [
     " called",
-    0.0275
+    0.0303
    ],
    [
-    " determined",
-    0.0204
+    ",",
+    0.0186
    ],
    [
-    " expressed",
-    0.0175
+    " greater",
+    0.0165
    ],
    [
     " to",
-    0.0172
+    0.0109
+   ],
+   [
+    " in",
+    0.0108
+   ],
+   [
+    " numer",
+    0.0092
    ]
   ],
   "1.9": [
+   [
+    " measured",
+    0.0348
+   ],
    [
     " the",
     0.0326
    ],
    [
-    " that",
-    0.0212
+    " proportional",
+    0.0291
    ],
    [
     " therefore",
-    0.0166
-   ],
-   [
-    "<|endoftext|>",
-    0.0163
-   ],
-   [
-    " a",
-    0.0149
+    0.0237
    ],
    [
     " equal",
-    0.0135
+    0.0186
    ],
    [
-    " found",
-    0.013
-   ],
-   [
-    " proportional",
-    0.0126
+    " a",
+    0.016
    ],
    [
     " called",
-    0.0124
+    0.0159
    ],
    [
-    " determined",
-    0.0111
+    ",",
+    0.0133
    ],
    [
-    " expressed",
-    0.0105
+    " greater",
+    0.0127
    ],
    [
     " to",
-    0.0105
+    0.0109
+   ],
+   [
+    " in",
+    0.0109
+   ],
+   [
+    " numer",
+    0.0103
    ]
   ]
  },
  "sweep": [
   {
    "T": 0.05,
-   "entropy_bits": 0.062,
-   "demon_bits": 0.062,
-   "german_share": 0.008
+   "entropy_bits": 0.093,
+   "demon_bits": 0.092,
+   "german_share": 0.074
   },
   {
    "T": 0.1,
-   "entropy_bits": 0.14,
-   "demon_bits": 0.138,
-   "german_share": 0.011
+   "entropy_bits": 0.209,
+   "demon_bits": 0.2,
+   "german_share": 0.07
   },
   {
    "T": 0.2,
-   "entropy_bits": 0.365,
-   "demon_bits": 0.334,
-   "german_share": 0.015
+   "entropy_bits": 0.451,
+   "demon_bits": 0.399,
+   "german_share": 0.061
   },
   {
    "T": 0.3,
-   "entropy_bits": 0.712,
-   "demon_bits": 0.554,
-   "german_share": 0.016
+   "entropy_bits": 0.791,
+   "demon_bits": 0.63,
+   "german_share": 0.059
   },
   {
    "T": 0.4,
-   "entropy_bits": 1.165,
-   "demon_bits": 0.772,
-   "german_share": 0.026
+   "entropy_bits": 1.061,
+   "demon_bits": 0.758,
+   "german_share": 0.053
   },
   {
    "T": 0.5,
-   "entropy_bits": 1.719,
-   "demon_bits": 0.97,
-   "german_share": 0.033
-  },
-  {
-   "T": 0.6,
-   "entropy_bits": 2.202,
-   "demon_bits": 1.088,
-   "german_share": 0.049
-  },
-  {
-   "T": 0.7,
-   "entropy_bits": 2.736,
-   "demon_bits": 1.193,
-   "german_share": 0.048
-  },
-  {
-   "T": 0.8,
-   "entropy_bits": 3.218,
-   "demon_bits": 1.261,
-   "german_share": 0.039
-  },
-  {
-   "T": 0.9,
-   "entropy_bits": 3.805,
-   "demon_bits": 1.345,
+   "entropy_bits": 1.408,
+   "demon_bits": 0.905,
    "german_share": 0.052
   },
   {
+   "T": 0.6,
+   "entropy_bits": 1.824,
+   "demon_bits": 1.012,
+   "german_share": 0.055
+  },
+  {
+   "T": 0.7,
+   "entropy_bits": 2.204,
+   "demon_bits": 1.106,
+   "german_share": 0.052
+  },
+  {
+   "T": 0.8,
+   "entropy_bits": 2.736,
+   "demon_bits": 1.208,
+   "german_share": 0.052
+  },
+  {
+   "T": 0.9,
+   "entropy_bits": 3.109,
+   "demon_bits": 1.258,
+   "german_share": 0.057
+  },
+  {
    "T": 1.0,
-   "entropy_bits": 4.35,
-   "demon_bits": 1.406,
-   "german_share": 0.073
+   "entropy_bits": 3.484,
+   "demon_bits": 1.3,
+   "german_share": 0.056
   },
   {
    "T": 1.1,
-   "entropy_bits": 4.942,
-   "demon_bits": 1.472,
-   "german_share": 0.103
+   "entropy_bits": 3.944,
+   "demon_bits": 1.37,
+   "german_share": 0.077
   },
   {
    "T": 1.2,
-   "entropy_bits": 5.47,
-   "demon_bits": 1.501,
-   "german_share": 0.069
+   "entropy_bits": 4.329,
+   "demon_bits": 1.41,
+   "german_share": 0.073
   },
   {
    "T": 1.3,
-   "entropy_bits": 6.024,
-   "demon_bits": 1.558,
-   "german_share": 0.067
+   "entropy_bits": 4.722,
+   "demon_bits": 1.443,
+   "german_share": 0.066
   },
   {
    "T": 1.4,
-   "entropy_bits": 6.595,
-   "demon_bits": 1.614,
-   "german_share": 0.1
+   "entropy_bits": 5.29,
+   "demon_bits": 1.51,
+   "german_share": 0.111
   },
   {
    "T": 1.5,
-   "entropy_bits": 7.216,
-   "demon_bits": 1.668,
-   "german_share": 0.15
+   "entropy_bits": 5.733,
+   "demon_bits": 1.557,
+   "german_share": 0.071
   },
   {
    "T": 1.6,
-   "entropy_bits": 7.615,
-   "demon_bits": 1.7,
-   "german_share": 0.121
+   "entropy_bits": 6.231,
+   "demon_bits": 1.597,
+   "german_share": 0.131
   },
   {
    "T": 1.7,
-   "entropy_bits": 8.067,
-   "demon_bits": 1.722,
-   "german_share": 0.218
+   "entropy_bits": 6.659,
+   "demon_bits": 1.646,
+   "german_share": 0.154
   },
   {
    "T": 1.8,
-   "entropy_bits": 8.353,
-   "demon_bits": 1.743,
-   "german_share": 0.157
+   "entropy_bits": 7.003,
+   "demon_bits": 1.661,
+   "german_share": 0.175
   },
   {
    "T": 1.9,
-   "entropy_bits": 8.742,
-   "demon_bits": 1.783,
-   "german_share": 0.223
+   "entropy_bits": 7.481,
+   "demon_bits": 1.708,
+   "german_share": 0.169
   },
   {
    "T": 2.0,
-   "entropy_bits": 9.046,
-   "demon_bits": 1.797,
-   "german_share": 0.225
+   "entropy_bits": 7.888,
+   "demon_bits": 1.74,
+   "german_share": 0.291
   }
  ]
 }

@@ -31,7 +31,7 @@ fig.savefig(HERE / "softmax.svg", bbox_inches="tight"); plt.close(fig)
 sw = d["sweep"]
 T = [r["T"] for r in sw]; H = [r["entropy_bits"] for r in sw]
 fig, ax = plt.subplots(figsize=(8, 4))
-for lo, hi, name, col in [(0, 0.35, "SOLID\nloops", COLD), (0.35, 1.1, "LIQUID\nMaxwell talks", ROOM), (1.1, 2.05, "GAS\ntwo languages mix", HOT)]:
+for lo, hi, name, col in [(0, 0.35, "SOLID\nstiff", COLD), (0.35, 1.1, "LIQUID\nMaxwell talks", ROOM), (1.1, 2.05, "GAS\ntwo languages mix", HOT)]:
     ax.axvspan(lo, hi, color=col, alpha=0.10, linewidth=0)
     ax.text((lo + hi) / 2, 10.2, name, ha="center", va="top", color=col, fontsize=10.5, fontweight="bold")
 ax.plot(T, H, color=INK, linewidth=2)

@@ -17,58 +17,58 @@
 <text x="116" y="267" font-size="20" font-weight="700" fill="#e8743b">28 °C</text>
 <rect x="190" y="205" width="430" height="112" rx="10" fill="#0d0f12"/>
 <text x="206" y="231" class="m" font-size="15" fill="#7fd3ff">28.0C T=1.9 GAS</text>
-<text x="206" y="257" class="m" font-size="15" fill="#f1f1f1">The temperature of a body is therefore at</text>
-<text x="206" y="278" class="m" font-size="15" fill="#f1f1f1">macipro will denote doch dann h will</text>
-<text x="206" y="299" class="m" font-size="15" fill="#f1f1f1">haben diese Zu definuchaetracht trotz...</text>
+<text x="206" y="257" class="m" font-size="15" fill="#f1f1f1">The temperature of a body is therefore</text>
+<text x="206" y="278" class="m" font-size="15" fill="#f1f1f1">mechanically equivalent bin doch dann h</text>
+<text x="206" y="299" class="m" font-size="15" fill="#f1f1f1">higher Koluch doch geschmacklicken I...</text>
 <line x1="646" y1="313" x2="906" y2="313" stroke="#c9c9cf" stroke-width="1.5"/>
-<rect x="650" y="309.8704" width="26" height="3.1296" rx="4" fill="#e8743b"/>
-<rect x="682" y="310.9648" width="26" height="2.0352" rx="4" fill="#e8743b"/>
-<rect x="714" y="311" width="26" height="2" rx="4" fill="#e8743b"/>
-<rect x="746" y="311" width="26" height="2" rx="4" fill="#e8743b"/>
+<rect x="650" y="309.6592" width="26" height="3.3407999999999998" rx="4" fill="#e8743b"/>
+<rect x="682" y="309.8704" width="26" height="3.1296" rx="4" fill="#e8743b"/>
+<rect x="714" y="310.2064" width="26" height="2.7936" rx="4" fill="#e8743b"/>
+<rect x="746" y="310.7248" width="26" height="2.2752" rx="4" fill="#e8743b"/>
 <rect x="778" y="311" width="26" height="2" rx="4" fill="#e8743b"/>
 <rect x="810" y="311" width="26" height="2" rx="4" fill="#e8743b"/>
 <rect x="842" y="311" width="26" height="2" rx="4" fill="#e8743b"/>
 <rect x="874" y="311" width="26" height="2" rx="4" fill="#e8743b"/>
 <text x="650" y="199" font-size="13" fill="#5d5f66">next word, T = 1.9</text>
-<text x="930" y="255" font-size="38" font-weight="700" fill="#e8743b">8.7 bits</text>
+<text x="930" y="255" font-size="38" font-weight="700" fill="#e8743b">7.5 bits</text>
 <text x="930" y="281" font-size="15" fill="#5d5f66">entropy of each word (gas)</text>
 <line x1="84" y1="395" x2="110" y2="395" stroke="#3f9e6b" stroke-width="3"/>
 <text x="116" y="402" font-size="20" font-weight="700" fill="#3f9e6b">22 °C</text>
 <rect x="190" y="340" width="430" height="112" rx="10" fill="#0d0f12"/>
 <text x="206" y="366" class="m" font-size="15" fill="#7fd3ff">22.0C T=0.7 LIQUID</text>
 <text x="206" y="392" class="m" font-size="15" fill="#f1f1f1">The temperature of a body is therefore at</text>
-<text x="206" y="413" class="m" font-size="15" fill="#f1f1f1">the temperature T will be the same as in</text>
-<text x="206" y="434" class="m" font-size="15" fill="#f1f1f1">the case of the two columns. In the same...</text>
+<text x="206" y="413" class="m" font-size="15" fill="#f1f1f1">the temperature of the body which is</text>
+<text x="206" y="434" class="m" font-size="15" fill="#f1f1f1">called a higher temperature.</text>
 <line x1="646" y1="448" x2="906" y2="448" stroke="#c9c9cf" stroke-width="1.5"/>
-<rect x="650" y="411.9232" width="26" height="36.076800000000006" rx="4" fill="#3f9e6b"/>
-<rect x="682" y="436.8064" width="26" height="11.1936" rx="4" fill="#3f9e6b"/>
-<rect x="714" y="442.2496" width="26" height="5.7504" rx="4" fill="#3f9e6b"/>
-<rect x="746" y="442.4704" width="26" height="5.5296" rx="4" fill="#3f9e6b"/>
-<rect x="778" y="443.6992" width="26" height="4.3008" rx="4" fill="#3f9e6b"/>
-<rect x="810" y="444.7072" width="26" height="3.2927999999999997" rx="4" fill="#3f9e6b"/>
-<rect x="842" y="445.0336" width="26" height="2.9664" rx="4" fill="#3f9e6b"/>
-<rect x="874" y="445.264" width="26" height="2.736" rx="4" fill="#3f9e6b"/>
+<rect x="650" y="423.7888" width="26" height="24.211199999999998" rx="4" fill="#3f9e6b"/>
+<rect x="682" y="427.744" width="26" height="20.256" rx="4" fill="#3f9e6b"/>
+<rect x="714" y="433.024" width="26" height="14.975999999999999" rx="4" fill="#3f9e6b"/>
+<rect x="746" y="439.4176" width="26" height="8.5824" rx="4" fill="#3f9e6b"/>
+<rect x="778" y="443.536" width="26" height="4.464" rx="4" fill="#3f9e6b"/>
+<rect x="810" y="445.0432" width="26" height="2.9568000000000003" rx="4" fill="#3f9e6b"/>
+<rect x="842" y="445.0912" width="26" height="2.9088000000000003" rx="4" fill="#3f9e6b"/>
+<rect x="874" y="446" width="26" height="2" rx="4" fill="#3f9e6b"/>
 <text x="650" y="334" font-size="13" fill="#5d5f66">next word, T = 0.7</text>
-<text x="930" y="390" font-size="38" font-weight="700" fill="#3f9e6b">2.7 bits</text>
+<text x="930" y="390" font-size="38" font-weight="700" fill="#3f9e6b">2.2 bits</text>
 <text x="930" y="416" font-size="15" fill="#5d5f66">entropy of each word (liquid)</text>
 <line x1="84" y1="530" x2="110" y2="530" stroke="#4a90d9" stroke-width="3"/>
 <text x="116" y="537" font-size="20" font-weight="700" fill="#4a90d9">19 °C</text>
 <rect x="190" y="475" width="430" height="112" rx="10" fill="#0d0f12"/>
 <text x="206" y="501" class="m" font-size="15" fill="#7fd3ff">19.0C T=0.1 SOLID</text>
-<text x="206" y="527" class="m" font-size="15" fill="#f1f1f1">The temperature of a body is the same</text>
-<text x="206" y="548" class="m" font-size="15" fill="#f1f1f1">as that of the body, and that the</text>
-<text x="206" y="569" class="m" font-size="15" fill="#f1f1f1">temperature of the body is the same as...</text>
+<text x="206" y="527" class="m" font-size="15" fill="#f1f1f1">The temperature of a body is measured by</text>
+<text x="206" y="548" class="m" font-size="15" fill="#f1f1f1">the product of the mass of the body into</text>
+<text x="206" y="569" class="m" font-size="15" fill="#f1f1f1">the distance between the two points.</text>
 <line x1="646" y1="583" x2="906" y2="583" stroke="#c9c9cf" stroke-width="1.5"/>
-<rect x="650" y="487.0288" width="26" height="95.97120000000001" rx="4" fill="#4a90d9"/>
-<rect x="682" y="581" width="26" height="2" rx="4" fill="#4a90d9"/>
-<rect x="714" y="581" width="26" height="2" rx="4" fill="#4a90d9"/>
+<rect x="650" y="510.4048" width="26" height="72.5952" rx="4" fill="#4a90d9"/>
+<rect x="682" y="562.1584" width="26" height="20.8416" rx="4" fill="#4a90d9"/>
+<rect x="714" y="580.4944" width="26" height="2.5056000000000003" rx="4" fill="#4a90d9"/>
 <rect x="746" y="581" width="26" height="2" rx="4" fill="#4a90d9"/>
 <rect x="778" y="581" width="26" height="2" rx="4" fill="#4a90d9"/>
 <rect x="810" y="581" width="26" height="2" rx="4" fill="#4a90d9"/>
 <rect x="842" y="581" width="26" height="2" rx="4" fill="#4a90d9"/>
 <rect x="874" y="581" width="26" height="2" rx="4" fill="#4a90d9"/>
 <text x="650" y="469" font-size="13" fill="#5d5f66">next word, T = 0.1</text>
-<text x="930" y="525" font-size="38" font-weight="700" fill="#4a90d9">0.1 bits</text>
+<text x="930" y="525" font-size="38" font-weight="700" fill="#4a90d9">0.2 bits</text>
 <text x="930" y="551" font-size="15" fill="#5d5f66">entropy of each word (solid)</text>
 <text x="930" y="199" font-size="13" fill="#5d5f66">temperature in, entropy out</text>
 </svg>

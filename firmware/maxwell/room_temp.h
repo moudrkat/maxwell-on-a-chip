@@ -1,8 +1,7 @@
 // room_temp.h -- the room sets the model's temperature, and the BOOT button lets Maxwell's demon in.
 //
 // An SHT40 on the display's I2C bus reads the air; every word is sampled at room_to_T(degrees, normal)
-// (runtime/boltzmann.h), where normal is the first reading after power-up. Colder than that makes the model stiff (it
-// loops), a warm hand on the sensor makes it ramble. With no sensor answering, it stays at normal. The chip writes paragraph after paragraph on its own; a typed line starts the next one.
+// (runtime/boltzmann.h), where normal is the first reading after power-up. Colder than that makes the model stiff, a warm hand on the sensor makes it ramble. With no sensor answering, it stays at normal. The chip writes paragraph after paragraph on its own; a typed line starts the next one.
 // The top line of the screen always shows the reading, T and the phase, or DEMON while the demon is at the door.
 #ifndef ROOM_TEMP_H
 #define ROOM_TEMP_H

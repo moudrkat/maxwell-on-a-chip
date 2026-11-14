@@ -1,1 +1,1 @@
-[{"tau": 0.125, "attn_bits": 0.443}, {"tau": 0.25, "attn_bits": 0.895}, {"tau": 0.5, "attn_bits": 1.696}, {"tau": 1.0, "attn_bits": 2.758}, {"tau": 2.0, "attn_bits": 3.826}, {"tau": 4.0, "attn_bits": 4.568}, {"tau": 8.0, "attn_bits": 4.803}, {"tau": 16.0, "attn_bits": 4.86}]
+[{"tau": 0.125, "attn_bits": 0.378}, {"tau": 0.25, "attn_bits": 0.765}, {"tau": 0.5, "attn_bits": 1.61}, {"tau": 1.0, "attn_bits": 2.82}, {"tau": 2.0, "attn_bits": 3.977}, {"tau": 4.0, "attn_bits": 4.62}, {"tau": 8.0, "attn_bits": 4.814}, {"tau": 16.0, "attn_bits": 4.862}]

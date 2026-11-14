@@ -14,11 +14,11 @@
   <!-- OLED -->
   <rect x="560" y="60" width="210" height="150" rx="10" fill="#2471a3"/>
   <rect x="578" y="78" width="174" height="96" rx="4" fill="#0a0a0a"/>
-  <text x="586" y="96" style="fill:#7fd3ff;font-size:11px">29.8C T=1.78 GAS</text>
+  <text x="586" y="96" style="fill:#7fd3ff;font-size:11px">28.0C T=1.90 GAS</text>
   <text x="586" y="116" style="fill:#fff;font-size:11px">The temperature of a</text>
-  <text x="586" y="131" style="fill:#fff;font-size:11px">body is therefore at</text>
-  <text x="586" y="146" style="fill:#fff;font-size:11px">maciprocal dann haben</text>
-  <text x="586" y="161" style="fill:#fff;font-size:11px">place whose ...</text>
+  <text x="586" y="131" style="fill:#fff;font-size:11px">body is therefore</text>
+  <text x="586" y="146" style="fill:#fff;font-size:11px">mechanically equivalent</text>
+  <text x="586" y="161" style="fill:#fff;font-size:11px">bin doch dann h ...</text>
   <rect x="770" y="120" width="16" height="12" rx="2" fill="#f4f4f4" stroke="#888"/><text x="792" y="131" class="s">μŠup</text>
   <g fill="#e8c547"><circle cx="580" cy="194" r="5"/><circle cx="610" cy="194" r="5"/><circle cx="640" cy="194" r="5"/><circle cx="670" cy="194" r="5"/></g>
   <text x="567" y="187" style="fill:#fff;font-size:9.5px">VCC  GND  SDA  SCL</text>

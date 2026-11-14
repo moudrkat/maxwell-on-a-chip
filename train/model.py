@@ -51,6 +51,7 @@ class Config:
     seq_len: int = 512
     ple_dim: int = 64
     rope_theta: float = 10000.0
+    dropout: float = 0.0          # on each residual branch, in training only; nothing changes on the chip
 
     @property
     def head_dim(self):
@@ -165,8 +166,9 @@ class Block(nn.Module):
             self.ple_norm = RMSNorm(cfg.d_model)
 
     def forward(self, x, cos, sin, ple=None):
-        x = x + self.attn(self.attn_norm(x), cos, sin)
-        x = x + self.ffn(self.ffn_norm(x))
+        p = self.cfg.dropout if self.training else 0.0
+        x = x + F.dropout(self.attn(self.attn_norm(x), cos, sin), p)
+        x = x + F.dropout(self.ffn(self.ffn_norm(x)), p)
         if ple is not None:
             g = F.gelu(self.ple_gate(x))
             x = x + self.ple_norm(self.ple_proj(g * ple))

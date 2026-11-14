@@ -16,15 +16,15 @@ hidden in a square root: it is a number you can turn.
 So I did the only reasonable thing. I trained a tiny language model on the two people who gave us that equation,
 James Clerk Maxwell and Ludwig Boltzmann, put it on a chip, and let the room set its temperature.
 
-Cold room: they get stuck. *"The temperature of a body is the same as that of the body, and that the temperature of
-the body is the same as that of the body, and that..."* Warm the sensor in your hand: they start to ramble, and then
+Cold room: they go stiff, and now and then get stuck. *"It is evident that the phenomenon of the cause of the cause
+of the cause of the cause of the cause..."* Warm the sensor in your hand: they start to ramble, and then
 to speak each other's language. Somewhere in between, they almost make sense, which is more than can be said for
 most of us at room temperature.
 
 ## What it is
 
 - A 3M-parameter transformer trained from scratch on Maxwell's books (in English) and Boltzmann's lectures on gas
-  theory (in his German original). One model, two physicists, two languages. No pretrained anything underneath:
+  theory, on mechanics and on Maxwell's own theory of electricity (in his German original). One model, two physicists, two languages. No pretrained anything underneath:
   they know only what they wrote.
 - It runs on an ESP32-S3 (1.6 MB in int4) and samples every word with `softmax(logits / T)`: Maxwell–Boltzmann
   statistics, applied to Maxwell and Boltzmann.
@@ -39,12 +39,13 @@ The same softmax in three rooms, after *"The temperature of a body is"*:
 
 ![The next-word distribution at T = 0.1, 0.7 and 1.9](charts/softmax.svg)
 
-At 0.1, "the" gets 99.97% and nothing else gets a word in. At 1.9, nothing is sure of anything.
+At 0.1, "measured" gets 76% and one other word most of the rest. At 1.9, the favourite has 3.5%: nothing is sure
+of anything.
 
 ![Entropy of each sampled word against temperature, with solid, liquid and gas phases](charts/entropy.svg)
 
-Turn the temperature up and the entropy of each word climbs from almost nothing to 9 bits, out of a possible 11.
-The phase boundaries are where the text changes character, read off by eye: loops below, Maxwell in the middle, two
+Turn the temperature up and the entropy of each word climbs from almost nothing to 8 bits, out of a possible 11.
+The phase boundaries are where the text changes character, read off by eye: stiff below, Maxwell in the middle, two
 languages above.
 
 Physicists have looked at this properly. Nakaishi, Nishikawa and Hukushima
@@ -63,18 +64,21 @@ through: order from disorder, without doing any work. Language models have one. 
 the 4 most probable words get through the door.
 
 Press BOOT and the demon is at the door (the screen says DEMON). The temperature doesn't change. The entropy does:
-at T = 1.9, 8.7 bits per word without it, 1.8 with it (the dashed line above), and hot Maxwell goes from
-*"...by equation Me When an plahoperbar expading electricity..."* back to
-*"The temperature of a body is therefore, that it must be a line of internal motion."* Not true, but grammatical,
-which is the most a demon can do.
+at T = 1.9, 7.5 bits per word without it, 1.7 with it (the dashed line above), and hot Maxwell goes from
+*"When a gas is compressed at temperature below small into equal jegk cobalausenden Strain..."* back to
+*"When a gas is compressed in any manner, but in which case the gas becomes of greatest density. This is the great
+number of molecules in the vessel, which in this case is a gas."* Grammatical, and in its last clause even true,
+which is more than a demon is paid for.
 
 It took physics about a century to work out why the demon doesn't break the second law (it has to forget what it
 measured, and forgetting costs energy). Ours is powered over USB, so the books balance.
 
 ### Two gases
 
-And the other thing Boltzmann is famous for: two gases mixing. Cold, Maxwell stays English. Hot, Boltzmann's German
-leaks in, from 1% of his small words at T = 0.05 to 22% at T = 2. Warm Boltzmann returns the favour: *"...auf die Volumeneinheit abgeleitet werden kann. Direction of g; ..."*
+And the other thing Boltzmann is famous for: two gases mixing. In a paragraph that Maxwell starts, 5 to 7% of the
+small words are German up to T = 1.3; then Boltzmann leaks in: 17% at 1.9, 29% at 2. *"...which are generally given merely
+indum das erhaltene Krit dannsetzen als in der ins Decke' legte Algebra."* Warm Boltzmann returns the favour:
+*"Die Molekuele bewegen sich freie Wein ... correspond with the law we mean when men supposes that..."*
 
 ### The other softmax
 
@@ -133,7 +137,7 @@ arduino-cli lib install "Adafruit SSD1306" "Adafruit GFX Library"
 **Use.** Nothing. It starts writing. To change their mood:
 
 - warm the SHT40 in your hand (it takes half a minute; thermometers are not in a hurry): they ramble, then switch languages;
-- cool it by three degrees (a window in November, or a cold glass next to it; keep it dry): they get stuck in loops;
+- cool it by three degrees (a window in November, or a cold glass next to it; keep it dry): they go stiff;
 - press the BOOT button: Maxwell's demon, on and off;
 - type a line into the serial monitor (115200 baud) and they continue your sentence instead.
 
@@ -159,10 +163,12 @@ pressing RESET. Like the rest of us, they think the room they woke up in is how 
 
 - The texts are archive.org OCR, cleaned by `clean.py`: equations and tables are dropped (OCR turns them into confetti),
   so this Maxwell never writes a formula. He just talks about them.
-- Boltzmann is one sixth of the text, so his paragraphs go in twice, to make the two gases more even. The mix in the
-  output follows that choice: the model's distribution is only as fair as its data.
+- Boltzmann is a bit over a quarter of the paragraphs, Maxwell the rest. The mix in the output follows that: the
+  model's distribution is only as fair as its data.
 - Umlauts are written ae, oe, ue, ss. The chip is ASCII, like a typewriter from 1896.
-- With about a million words, a model this size learns a fair amount by heart. Cold, it loops rather than recites.
+- With about a million words, a model this size would rather learn them by heart. Dropout (0.3, in training only)
+  talks it out of that: on text it never saw, the loss went from 3.26 to 2.97 against the first version, which had no
+  dropout, less Boltzmann, and looped whenever it was cold.
 - The mixing chart counts German among the small words (the, der, und...) in 48 paragraphs per point that start in
   English. The demon's line is the entropy it would leave at each step of the same paragraphs.
 - Every paragraph on the chip is sampled fresh, word by word, at whatever the thermometer says right now. Nothing is

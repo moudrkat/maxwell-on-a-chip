@@ -9,9 +9,9 @@ HERE = Path(__file__).parent
 d = json.loads((HERE / "measure.json").read_text())
 H = {r["T"]: r["entropy_bits"] for r in d["sweep"]}
 ROWS = [  # (degrees C, T, phase, colour, what it wrote at that T, from sample runs)
-    (28, "1.9", "GAS", "#e8743b", ["The temperature of a body is therefore at", "macipro will denote doch dann h will", "haben diese Zu definuchaetracht trotz..."]),
-    (22, "0.7", "LIQUID", "#3f9e6b", ["The temperature of a body is therefore at", "the temperature T will be the same as in", "the case of the two columns. In the same..."]),
-    (19, "0.1", "SOLID", "#4a90d9", ["The temperature of a body is the same", "as that of the body, and that the", "temperature of the body is the same as..."]),
+    (28, "1.9", "GAS", "#e8743b", ["The temperature of a body is therefore", "mechanically equivalent bin doch dann h", "higher Koluch doch geschmacklicken I..."]),
+    (22, "0.7", "LIQUID", "#3f9e6b", ["The temperature of a body is therefore at", "the temperature of the body which is", "called a higher temperature."]),
+    (19, "0.1", "SOLID", "#4a90d9", ["The temperature of a body is measured by", "the product of the mass of the body into", "the distance between the two points."]),
 ]
 W, Ht = 1200, 628
 s = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {Ht}" width="{W}" height="{Ht}">',

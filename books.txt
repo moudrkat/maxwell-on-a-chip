@@ -9,7 +9,10 @@ treatiseonelectr01maxwrich
 treatiseonelectr02maxw
 mattermotion00maxwuoft
 elementarytreati00maxwuoft
-# Boltzmann, in German; twice, so the two gases are more even
-vorlesungenber01bolt 2
-vorlesungenber02bolt 2
-populreschrifte00boltgoog 2
+# Boltzmann, in German: gas theory, popular writings, his lectures on Maxwell's theory, and on mechanics
+vorlesungenber01bolt
+vorlesungenber02bolt
+populreschrifte00boltgoog
+vorlesungenberm01boltgoog 1 Vorwort
+bub_gb_Ws7mAAAAMAAJ 1 Vorwort
+bub_gb_fJD9u5tl4NYC 1 Vorwort
