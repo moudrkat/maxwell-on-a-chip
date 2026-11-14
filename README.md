@@ -25,8 +25,9 @@ most of us at room temperature.
 - It runs on an ESP32-S3 (1.6 MB in int4) and samples every word with `softmax(logits / T)`: the Maxwell–Boltzmann
   distribution, applied to Maxwell and Boltzmann.
 - `T` comes from a real thermometer (an SHT40) next to the chip.
-- The screen shows the phase the text is in (SOLID, LIQUID, GAS) and, after each paragraph, its entropy.
-  Temperature in, entropy out.
+- The top line of the screen shows the reading, `T` and the phase the text is in (SOLID, LIQUID, GAS); after each
+  paragraph, its entropy. Temperature in, entropy out.
+- The BOOT button lets in **Maxwell's demon** (see below). He invented it; it seemed rude not to invite it.
 
 ## The physics, measured on this model
 
@@ -44,8 +45,25 @@ languages above.
 
 ![German share in paragraphs that start in English, against temperature](charts/mixing.svg)
 
+### Maxwell's demon
+
+In 1867 Maxwell imagined a small being at a door between two chambers of gas, letting only the fast molecules
+through: order from disorder, without doing any work. Language models have one. It is called top-k sampling: only
+the 4 most probable words get through the door.
+
+Press BOOT and the demon is at the door (the screen says DEMON). The temperature doesn't change. The entropy does:
+at T = 1.9, 8.7 bits per word without it, 1.8 with it (the dashed line above), and hot Maxwell goes from
+*"...by equation Me When an plahoperbar expading electricity..."* back to
+*"The temperature of a body is therefore, that it must be a line of internal motion."* Not true, but grammatical,
+which is the most a demon can do.
+
+It took physics about a century to work out why the demon doesn't break the second law (it has to forget what it
+measured, and forgetting costs energy). Ours is powered over USB, so the books balance.
+
+### Two gases
+
 And the other thing Boltzmann is famous for: two gases mixing. Cold, Maxwell stays English. Hot, Boltzmann's German
-leaks in. Warm Boltzmann returns the favour: *"...auf die Volumeneinheit abgeleitet werden kann. Direction of g; ..."*
+leaks in, from 1% of his small words at T = 0.05 to 22% at T = 2. Warm Boltzmann returns the favour: *"...auf die Volumeneinheit abgeleitet werden kann. Direction of g; ..."*
 
 ## Build it
 
@@ -84,7 +102,8 @@ arduino-cli lib install "Adafruit SSD1306" "Adafruit GFX Library"
 **Use.** Nothing. It starts writing. To change their mood:
 
 - warm the SHT40 in your hand (it takes half a minute; thermometers are not in a hurry): they ramble, then switch languages;
-- hold it near a cold window: they get stuck in loops;
+- cool it below about 20 C (a cold window in November, or a cold glass next to it; keep it dry): they get stuck in loops;
+- press the BOOT button: Maxwell's demon, on and off;
 - type a line into the serial monitor (115200 baud) and they continue your sentence instead.
 
 The temperature map: `T = 0.1 + 0.15 * (degrees C - 18)`, between 0.05 and 2. A 22 C room gives 0.7, a warm hand
@@ -93,7 +112,7 @@ around 30 C gives about 1.9. Change it in `firmware/maxwell/room_temp.h` if your
 **If it doesn't:**
 
 - screen dark: SDA and SCL swapped, or the OLED is an SH1106 (set `OLED_CONTROLLER` in `firmware/maxwell/display.h`);
-- the serial log says "no SHT40": the sensor isn't answering, so they assume a polite 22 C forever. Check the cable;
+- the serial log says "no SHT40": the sensor isn't answering at 0x44 or 0x45, so they assume a polite 22 C forever. Check the cable;
 - flashing fails: hold BOOT, press RESET, let go of BOOT, try again.
 
 ## The small print
@@ -104,11 +123,23 @@ around 30 C gives about 1.9. Change it in `firmware/maxwell/room_temp.h` if your
   output follows that choice: the model's distribution is only as fair as its data.
 - Umlauts are written ae, oe, ue, ss. The chip is ASCII, like a typewriter from 1896.
 - With about a million words, a model this size learns a fair amount by heart. Cold, it loops rather than recites.
-- The mixing chart is 12 paragraphs per point, so it wobbles. The trend is real; the third decimal is not.
+- The mixing chart counts German among the small words (the, der, und...) in 48 paragraphs per point that start in
+  English. The demon's line is the entropy it would leave at each step of the same paragraphs.
 - Every paragraph on the chip is sampled fresh, word by word, at whatever the thermometer says right now. Nothing is
   recorded or replayed. At very low temperature the same start gives almost the same text, because that is what a
   cold distribution does.
-- Not yet tried on a real thermometer. It compiles, the model on the chip matches PyTorch, and the rest is physics.
+- Not yet tried on a real thermometer. The firmware compiles, the C runtime matches PyTorch on this model, and the
+  chip's own sampling code, run on a computer (`host/maxwell.c`), gives the entropies in the charts. The rest is physics.
+
+## No chip?
+
+The same model file, C runtime and sampling code, on a computer:
+
+```
+cc -O2 -o host/maxwell host/maxwell.c -lm
+host/maxwell 18          # degrees Celsius
+host/maxwell 30 demon
+```
 
 ## Do it all yourself
 
@@ -123,7 +154,8 @@ python measure.py runs/ple-mb-s0-best.pt && python charts/draw.py   # the charts
 |---|---|
 | `model/` | the trained model (`model.bin`, int4) and its tokenizer |
 | `firmware/maxwell/` | the sketch; `room_temp.h` is the thermometer part |
-| `runtime/` | the transformer in C that runs on the chip |
+| `runtime/` | the transformer in C that runs on the chip; `boltzmann.h` is the whole idea in sixty lines |
+| `host/` | the same code on a computer |
 | `train/` | the trainer and the int4 exporter |
 | `charts/` | the measurements and the pictures |
 

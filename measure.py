@@ -2,7 +2,8 @@
   - the next-word distribution after "The temperature of a body is" at a few temperatures;
   - entropy of each sampled word (bits) against temperature;
   - how much German gets into paragraphs that start in English, against temperature (share of German among the
-    common function words, so a stray "the" in German or "der" in English is what's counted).
+    common function words; 48 paragraphs per temperature), so a stray "the" in German or "der" in English is what's counted).
+  - the entropy the demon (only the 4 likeliest words) would leave at the same step.
 Writes charts/measure.json.
 
     python measure.py runs/ple-mb-s0-best.pt --data data/vocab-2048
@@ -59,8 +60,8 @@ def main():
             out["dist"][str(T)] = [[tok.decode([int(i)]), round(float(v), 4)] for v, i in zip(top.values, top.indices)]
         rng = random.Random(0)
         for T in [0.05] + [round(0.1 * k, 1) for k in range(1, 21)]:
-            bits, en, de = [], 0, 0
-            for r in range(12):
+            bits, dbits, en, de = [], [], 0, 0
+            for r in range(48):
                 torch.manual_seed(1000 * r + int(T * 100))
                 ids = tok.encode(STARTS_EN[r % len(STARTS_EN)]).ids
                 start = len(ids)
@@ -68,6 +69,8 @@ def main():
                     lg = model(torch.tensor([ids[-cfg["seq_len"]:]]))[0][0, -1] / T
                     p = torch.softmax(lg, -1)
                     bits.append(float(-(p * torch.log2(p.clamp_min(1e-12))).sum()))
+                    q = torch.softmax(torch.topk(lg, 4).values, -1)      # what Maxwell's demon would let through
+                    dbits.append(float(-(q * torch.log2(q.clamp_min(1e-12))).sum()))
                     nxt = int(torch.multinomial(p, 1))
                     if nxt == eot:
                         break
@@ -75,6 +78,7 @@ def main():
                 words = tok.decode(ids[start:]).lower().split()
                 en += sum(w in EN for w in words); de += sum(w in DE for w in words)
             out["sweep"].append({"T": T, "entropy_bits": round(sum(bits) / len(bits), 3),
+                                 "demon_bits": round(sum(dbits) / len(dbits), 3),
                                  "german_share": round(de / max(1, en + de), 3)})
             print(out["sweep"][-1], flush=True)
     Path(args.out).parent.mkdir(exist_ok=True)

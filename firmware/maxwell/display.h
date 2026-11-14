@@ -52,9 +52,15 @@ static Adafruit_SSD1306 oled = Adafruit_SSD1306(SCR_W, SCR_H, &Wire, -1);
 
 static int ox = 0, oy = 0;
 
+#if defined(ROOM_TEMPERATURE)
+static void room_header();              // room_temp.h: the reading stays on the top line of every page
+#endif
 static void display_home() {
   oled.clearDisplay();
   ox = 0; oy = 0;
+#if defined(ROOM_TEMPERATURE)
+  room_header();
+#endif
 }
 
 static void display_begin() {

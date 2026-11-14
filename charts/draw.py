@@ -36,6 +36,10 @@ for lo, hi, name, col in [(0, 0.35, "SOLID\nloops", COLD), (0.35, 1.1, "LIQUID\n
     ax.text((lo + hi) / 2, 10.2, name, ha="center", va="top", color=col, fontsize=10.5, fontweight="bold")
 ax.plot(T, H, color=INK, linewidth=2)
 ax.scatter(T, H, s=34, color=INK, edgecolor="white", linewidth=1.5, zorder=3)
+Dm = [r["demon_bits"] for r in sw]
+ax.plot(T, Dm, color="#7d3c98", linewidth=2, linestyle=(0, (5, 3)))
+ax.text(1.42, Dm[-1] + 0.45, "with Maxwell's demon", color="#7d3c98", fontsize=10.5, fontweight="bold")
+ax.text(1.42, H[14] + 1.5, "without", color=INK, fontsize=10.5, fontweight="bold", ha="right")
 ax.axhline(11, color=MUTE, linewidth=1, linestyle=(0, (4, 4)))
 ax.text(0.02, 10.75, "11 bits: every word equally likely (2048 of them)", color=MUTE, fontsize=9, va="top")
 ax.set_xlabel("sampling temperature T"); ax.set_ylabel("entropy of each word (bits)")
@@ -57,6 +61,6 @@ ax.set_xlim(0, 2.05); ax.set_ylim(0, 30)
 ax.grid(color=GRID, linewidth=0.8); ax.set_axisbelow(True)
 ax.set_title("Two gases mixing: Boltzmann's German leaking into Maxwell", color=INK, fontsize=13, loc="left")
 ax.text(0.02, 28, "share of German among the small words (the, der, und...) in paragraphs that start in English;\n"
-        "12 paragraphs per point, so it wobbles", color=MUTE, fontsize=9, va="top")
+        "48 paragraphs per point", color=MUTE, fontsize=9, va="top")
 fig.savefig(HERE / "mixing.svg", bbox_inches="tight"); plt.close(fig)
 print("drew softmax.svg, entropy.svg, mixing.svg")

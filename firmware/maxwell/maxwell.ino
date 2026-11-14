@@ -457,15 +457,7 @@ static void run_story(const int *prompt_ids, int n_prompt, float temp) {
 
   int64_t t_start = esp_timer_get_time();
 #if defined(ROOM_TEMPERATURE)
-  {                                     // the room's reading, and the phase it puts the text in, head the page
-    char head[40];
-    float T0 = room_softmax_temp();
-    int n = snprintf(head, sizeof head, "%.1fC T=%.2f %s\n", room_c, T0, room_phase(T0));
-    Serial.printf("[%s] ", room_seen ? "SHT40" : "no SHT40, 22 C assumed");
-#if USE_DISPLAY
-    display_puts((const unsigned char *)head, n);
-#endif
-  }
+  Serial.printf("[%s, %.1f C%s] ", room_seen ? "SHT40" : "no SHT40, 22 C assumed", room_c, room_demon ? ", demon" : "");
   double entropy_bits = 0; int entropy_n = 0;
 #endif
   for (int step = 0; step < N_GENERATE && pos < model.c.seq_len; step++) {
@@ -475,22 +467,22 @@ static void run_story(const int *prompt_ids, int n_prompt, float temp) {
     int best = 0; float bv = -1e30f;
     for (int v = 0; v < model.out_vocab; v++)
       if (s.logits[v] > bv) { bv = s.logits[v]; best = v; }
+#if defined(ROOM_TEMPERATURE)
+    {                                   // Boltzmann's distribution at the room's temperature (runtime/boltzmann.h)
+      float bits;
+      room_poll_demon();
+      best = boltzmann_sample(s.logits, model.out_vocab, temp, room_demon ? DEMON_K : 0,
+                              esp_random() / 4294967296.0f, &bits);
+      entropy_bits += bits; entropy_n++;
+    }
+#else
     if (temp > 0.0f) {
       // Softmax sample at `temp`: two extra passes over the logits (~10 ms)
       // against ~95 ms/token of compute. The argmax above doubles as the
       // numeric stabilizer.
       float sum = 0.f;
-#if defined(ROOM_TEMPERATURE)
-      float sumx = 0.f;                 // for the entropy of this word's distribution: H = log Z - <x>
-      for (int v = 0; v < model.out_vocab; v++) {
-        float x = (s.logits[v] - bv) / temp, e = expf(x);
-        sum += e; sumx += e * x;
-      }
-      entropy_bits += (logf(sum) - sumx / sum) / 0.6931472f; entropy_n++;
-#else
       for (int v = 0; v < model.out_vocab; v++)
         sum += expf((s.logits[v] - bv) / temp);
-#endif
       float r = (esp_random() / 4294967296.0f) * sum;
       float acc = 0.f;
       int pick = model.out_vocab - 1;
@@ -500,6 +492,7 @@ static void run_story(const int *prompt_ids, int n_prompt, float temp) {
       }
       best = pick;
     }
+#endif
     tok = best;
     if (tok == eot_id) break;       // the document ended; do not start another
     emit(tok);

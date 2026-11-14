@@ -2,3 +2,5 @@ data/
 __pycache__/
 *.pt
 build/
+runs/
+host/maxwell

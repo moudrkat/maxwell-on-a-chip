@@ -30,7 +30,7 @@
 <rect x="842" y="311" width="26" height="2" rx="4" fill="#e8743b"/>
 <rect x="874" y="311" width="26" height="2" rx="4" fill="#e8743b"/>
 <text x="650" y="199" font-size="13" fill="#5d5f66">next word, T = 1.9</text>
-<text x="930" y="255" font-size="38" font-weight="700" fill="#e8743b">8.8 bits</text>
+<text x="930" y="255" font-size="38" font-weight="700" fill="#e8743b">8.7 bits</text>
 <text x="930" y="281" font-size="15" fill="#5d5f66">entropy of each word (gas)</text>
 <line x1="84" y1="395" x2="110" y2="395" stroke="#3f9e6b" stroke-width="3"/>
 <text x="116" y="402" font-size="20" font-weight="700" fill="#3f9e6b">22 °C</text>
