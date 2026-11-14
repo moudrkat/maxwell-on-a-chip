@@ -1,5 +1,7 @@
 # Maxwell on a chip
 
+![One thermometer, three rooms: what the chip wrote, the softmax that wrote it, the entropy that came out](charts/hero.png)
+
 In my PhD interview, someone asked me to write down the attention equation.
 
 I started writing Boltzmann.
@@ -43,7 +45,7 @@ languages above.
 ![German share in paragraphs that start in English, against temperature](charts/mixing.svg)
 
 And the other thing Boltzmann is famous for: two gases mixing. Cold, Maxwell stays English. Hot, Boltzmann's German
-leaks in. Hot Boltzmann returns the favour: *"...auf die Volumeneinheit abgeleitet werden kann. Direction of g; ..."*
+leaks in. Warm Boltzmann returns the favour: *"...auf die Volumeneinheit abgeleitet werden kann. Direction of g; ..."*
 
 ## Build it
 
