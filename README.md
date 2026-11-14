@@ -6,8 +6,12 @@ In my PhD interview, someone asked me to write down the attention equation.
 
 I started writing Boltzmann.
 
-I wasn't wrong. Attention weights are a Boltzmann distribution: `exp(score) / sum(exp(score))`, with `sqrt(d)` sitting in
-the place of the temperature. Same equation, different handwriting.
+I wasn't wrong. Attention weights are a softmax, and a softmax is a Boltzmann distribution:
+`exp(score) / sum(exp(score))`, with `sqrt(d)` sitting in the place of the temperature. Same equation, different
+handwriting.
+
+The same softmax sits at the other end of the model too, where it picks the next word. There the temperature is not
+hidden in a square root: it is a number you can turn.
 
 So I did the only reasonable thing. I trained a tiny language model on the two people who gave us that equation,
 James Clerk Maxwell and Ludwig Boltzmann, put it on a chip, and let the room set its temperature.
