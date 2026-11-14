@@ -26,8 +26,8 @@ most of us at room temperature.
 - A 3M-parameter transformer trained from scratch on Maxwell's books (in English) and Boltzmann's lectures on gas
   theory (in his German original). One model, two physicists, two languages. No pretrained anything underneath:
   they know only what they wrote.
-- It runs on an ESP32-S3 (1.6 MB in int4) and samples every word with `softmax(logits / T)`: the Maxwell–Boltzmann
-  distribution, applied to Maxwell and Boltzmann.
+- It runs on an ESP32-S3 (1.6 MB in int4) and samples every word with `softmax(logits / T)`: Maxwell–Boltzmann
+  statistics, applied to Maxwell and Boltzmann.
 - `T` comes from a real thermometer (an SHT40) next to the chip.
 - The top line of the screen shows the reading, `T` and the phase the text is in (SOLID, LIQUID, GAS); after each
   paragraph, its entropy. Temperature in, entropy out.
@@ -146,6 +146,13 @@ pressing RESET. Like the rest of us, they think the room they woke up in is how 
 - flashing fails: hold BOOT, press RESET, let go of BOOT, try again.
 
 ## The small print
+
+- What is physics here and what is not. The mathematics is exact: `softmax(z / T)` is the Boltzmann distribution of a
+  system whose states are the 2048 tokens, with energies `-z`, and its entropy grows with `T` as it must. The
+  thermometer is theatre. `T` is a pure number, and the chip moves it by 0.2 per degree. Done honestly, in
+  proportion to the absolute temperature, a warm hand would change `T` by 3% and you would see nothing: freezing
+  them would take about -231 C, and evaporating them about 530 C. The phases are a way of speaking; a real phase
+  transition needs an infinite text. The demon is a joke with a real formula in it.
 
 - The texts are archive.org OCR, cleaned by `clean.py`: equations and tables are dropped (OCR turns them into confetti),
   so this Maxwell never writes a formula. He just talks about them.
