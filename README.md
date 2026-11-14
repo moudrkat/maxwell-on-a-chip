@@ -33,16 +33,52 @@ than can be said for most of us at room temperature.
 - Umlauts are written ae, oe, ue, ss. The chip is ASCII, like a typewriter from 1896.
 - With about a million words, a model this size learns a fair amount by heart. Cold, it loops rather than recites.
 
-## On the chip
+## Build it
 
-An ESP32-S3 with a 128x64 OLED, and an SHT40 clicked onto the display's I2C cable. The model is 3M parameters, 1.6 MB
-in int4. Flash it with esp32-ai:
+**Parts** (about the price of a nice lunch):
+
+| part | why |
+|---|---|
+| ESP32-S3 dev board, N16R8 (16 MB flash, 8 MB PSRAM) | the two physicists live here; they need the PSRAM |
+| 128x64 I2C OLED, 0.96" (SSD1306) | where they talk |
+| SHT40 temperature sensor | the thermostat on their personalities |
+| 4 dupont wires, or a μŠup (JST-SH 4-pin) cable if your OLED and SHT40 both have the little white connector | |
+| USB cable | |
+
+**Wiring.** The display and the thermometer share one I2C bus, so they go on the same four pins:
+
+| OLED and SHT40 | ESP32-S3 |
+|---|---|
+| VCC | 3V3 |
+| GND | GND |
+| SDA | GPIO 18 |
+| SCL | GPIO 8 |
+
+If both modules have a μŠup connector (LaskaKit's do), click a μŠup cable from the SHT40 into the OLED and wire only
+the OLED to the board. Never 5 V on these pins: Maxwell runs at 3.3 V.
+
+**Flash.** From a clone of [esp32-ai](https://github.com/moudrkat/esp32-ai), with this repo's model exported into
+`artifacts/maxwell/` (`model.bin`, `tokenizer.json`):
 
 ```
 ROOM=1 ARTIFACTS=artifacts/maxwell scripts/deploy.sh tinystories
 ```
 
-It writes paragraph after paragraph on its own, every word sampled at the temperature of the room
+**Use.** Nothing. It starts writing. To change their mood:
+
+- warm the SHT40 in your hand (it takes half a minute; thermometers are not in a hurry): they ramble, then switch languages;
+- hold it near a cold window: they get stuck in loops;
+- type a line over serial (`scripts/oled_talk.py` in esp32-ai) and they continue your sentence instead.
+
+**If it doesn't:**
+
+- screen dark: SDA and SCL swapped, or the OLED is an SH1106 (set `OLED_CONTROLLER` in `display.h`);
+- the serial log says "no SHT40": the sensor isn't answering, so they assume a polite 22 C forever. Check the cable;
+- flashing fails: hold BOOT, press RESET, let go of BOOT, try again.
+
+## On the chip
+
+The model is 3M parameters, 1.6 MB in int4. It writes paragraph after paragraph on its own, every word sampled at the temperature of the room
 (`T = 0.1 + 0.15 * (degrees C - 18)`: 22 C gives 0.7, a warm hand around 30 C gives about 1.9). The reading heads
 each paragraph on the screen. Type a line over serial and it continues that instead.
 
