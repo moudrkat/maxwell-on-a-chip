@@ -2,7 +2,7 @@
 
 ![One thermometer, three rooms: what the chip wrote, the softmax that wrote it, the entropy that came out](charts/hero.png)
 
-In my PhD interview, someone asked me to write down the attention equation.
+In an interview, someone asked me to write down the attention equation.
 
 I started writing Boltzmann.
 
@@ -239,6 +239,8 @@ python measure.py runs/ple-mb-s0-best.pt && python charts/draw.py   # the charts
 ## Want to help?
 
 See `CONTRIBUTING.md`: the short list of what is untested, and what I'd love to see. Nobody has frozen them on real hardware yet.
+
+And if you have an idea what a model on a chip is good for, apart from this, [tell me](https://github.com/moudrkat/tell-me).
 
 ## Thanks
 
