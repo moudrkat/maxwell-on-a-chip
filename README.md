@@ -143,7 +143,8 @@ If both modules have a μŠup connector (LaskaKit's do), click a μŠup cable fr
 the OLED to the board. Never 5 V on these pins: Maxwell runs at 3.3 V.
 
 No breadboard, and the display already sits on pins 18 and 8? Give the thermometer two pins of its own, any two free
-ones, say 4 and 5 (SDA to 4, SCL to 5), and flash with `SHT=4,5 ./flash.sh`.
+ones, say 4 and 5 (SDA to 4, SCL to 5, plus 3V3 and GND), and flash with `SHT=4,5 ./flash.sh`. This second way is the
+one that has run on a real board; the shared bus compiles and has not been tried.
 
 **Flash.** Everything is in this repo, the model too:
 
@@ -151,25 +152,28 @@ ones, say 4 and 5 (SDA to 4, SCL to 5), and flash with `SHT=4,5 ./flash.sh`.
 arduino-cli core install esp32:esp32
 arduino-cli lib install "Adafruit SSD1306" "Adafruit GFX Library"
 ./flash.sh                 # or ./flash.sh /dev/ttyUSB0
+SHT=4,5 ./flash.sh         # the thermometer on its own pins (SDA,SCL)
+WORD="The temperature of a body is" ./flash.sh    # start on one word instead of writing (combine with SHT=)
 ```
 
 **Use.** Nothing. It starts writing. To change their mood:
 
-- warm the SHT40 in your hand (it takes half a minute; thermometers are not in a hurry): they ramble, then switch languages;
+- put a finger on the SHT40, the tiny square chip on its board: a few seconds and they ramble, then switch languages. It takes a couple of minutes to cool back; thermometers are in no hurry in that direction;
 - cool it by three degrees (a window in November, or a cold glass next to it; keep it dry): they go stiff;
 - press the BOOT button: Maxwell's demon, on and off;
 - type a line into the serial monitor (115200 baud) and they continue your sentence instead;
 - type a line that starts with a question mark, `?The temperature of a body is`, and they hold still on one word
-  (see "One word, on the screen" above).
+  (see "The same chart, on the chip, by hand" above).
 
 The thermometer calibrates itself: whatever room the chip wakes up in is "normal" (T = 0.7, liquid Maxwell), and
 every degree warmer or colder moves T by 0.2, between 0.05 and 2. Three degrees colder and they freeze; a hand, six
 degrees warmer, and they evaporate. So it works in a cold flat and in a heat wave, and you reset "normal" by
-pressing RESET. Like the rest of us, they think the room they woke up in is how the world is.
+pressing RESET (with the sensor lying on the table, not in your hand). Like the rest of us, they think the room they woke up in is how the world is.
 
 **If it doesn't:**
 
 - screen dark: SDA and SCL swapped, or the OLED is an SH1106 (set `OLED_CONTROLLER` in `firmware/maxwell/display.h`);
+- screen goes dark while it was working: press RESET. It happened once here, right after the wires were handled;
 - the serial log says "no SHT40": the sensor isn't answering at 0x44 or 0x45, so they assume a polite 22 C forever and never change. Check the cable, and push the little white plug all the way in: a sensor with its data wires connected but no power still answers its address, and then never finishes a measurement;
 - flashing fails: hold BOOT, press RESET, let go of BOOT, try again.
 
