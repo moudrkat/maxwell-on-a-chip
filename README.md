@@ -242,7 +242,7 @@ python measure.py runs/ple-mb-s0-best.pt && python charts/draw.py   # the charts
 
 ## Want to help?
 
-See `CONTRIBUTING.md`: the short list of what is untested, and what I'd love to see. Nobody has frozen them on real hardware yet.
+See [CONTRIBUTING.md](CONTRIBUTING.md): the short list of what is untested, and what I'd love to see. Nobody has frozen them on real hardware yet.
 
 And if you have an idea what a model on a chip is good for, apart from this, [tell me](https://github.com/moudrkat/tell-me).
 
@@ -251,6 +251,6 @@ And if you have an idea what a model on a chip is good for, apart from this, [te
 The runtime that runs a language model on this chip at all, and the trainer, come from
 [esp32-ai](https://github.com/moudrkat/esp32-ai), my fork of Viacheslav Sierbov's
 [slvDev/esp32-ai](https://github.com/slvDev/esp32-ai). Without his work, Maxwell would have nowhere to live.
-See `THIRD_PARTY.md`.
+See [THIRD_PARTY.md](THIRD_PARTY.md).
 
 MIT licence. The texts are in the public domain: Maxwell died in 1879, Boltzmann in 1906, and neither has complained.
