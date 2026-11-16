@@ -11,6 +11,9 @@
 
 // The SHT40 normally shares the display's two I2C pins. If those are taken (the display wired straight to the board, no
 // breadboard), give the sensor its own two pins: SHT=4,5 ./flash.sh  (SDA, SCL), and it gets the second I2C bus.
+#if __has_include("generated/sht_pins.h")
+#include "generated/sht_pins.h"       // flash.sh writes it for SHT=sda,scl
+#endif
 #if defined(SHT_SDA) && defined(SHT_SCL)
 #define ROOM_WIRE Wire1
 #else
@@ -61,6 +64,29 @@ static void room_poll_demon() {
   bool down = digitalRead(PIN_DEMON) == LOW;
   if (down && !was) room_demon = !room_demon;
   was = down;
+}
+
+// The distribution the next word was drawn from, under the text: the ROOM_BARS most probable words as bars, largest
+// on the left, full height = probability 1. Cold, it is one tall bar; in a warm hand it melts into a flat line; the
+// demon leaves four. The tick above marks the word that was picked (at the right edge: further out in the tail).
+#define ROOM_BARS 32
+#ifndef OLED_BLACK
+#define OLED_BLACK 0                   // black is 0 on both SSD1306 and SH1106
+#endif
+#define ROOM_BARS_TOP 50               // the strip is rows 50..63; row 48 holds the tick
+static float room_p[ROOM_BARS];
+static int room_rank = 0;
+static void room_bars(const float *p, int rank) {
+  oled.fillRect(0, ROOM_BARS_TOP - 3, SCR_W, SCR_H - ROOM_BARS_TOP + 3, OLED_BLACK);
+  const int H = SCR_H - ROOM_BARS_TOP;
+  for (int j = 0; j < ROOM_BARS; j++) {
+    if (p[j] <= 0.f) continue;
+    int h = (int)(p[j] * H + 0.5f);
+    if (h < 1) h = 1;
+    oled.fillRect(j * 4, SCR_H - h, 3, h, OLED_WHITE);
+  }
+  int x = rank < ROOM_BARS ? rank * 4 : SCR_W - 3;
+  oled.fillRect(x, ROOM_BARS_TOP - 3, 3, 2, OLED_WHITE);
 }
 
 // the top line of the screen; display.h calls this whenever it clears the page

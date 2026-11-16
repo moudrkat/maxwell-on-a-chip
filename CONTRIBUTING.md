@@ -14,7 +14,7 @@ in the PR.
 
 **Things nobody has done yet**
 
-- run it on a real board with a real SHT40, and send a photo of the screen;
+- cool the sensor three degrees on a real board (it has only been warmed so far), and send a photo of the screen;
 - the SH1106 display path;
 - another physicist (`books.txt`), or another language pair;
 - an interactive page: the same model in a browser, with a thermometer you drag.

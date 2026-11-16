@@ -29,8 +29,9 @@ most of us at room temperature.
 - It runs on an ESP32-S3 (1.6 MB in int4) and samples every word with `softmax(logits / T)`: Maxwell–Boltzmann
   statistics, applied to Maxwell and Boltzmann.
 - `T` comes from a real thermometer (an SHT40) next to the chip.
-- The top line of the screen shows the reading, `T` and the phase the text is in (SOLID, LIQUID, GAS); after each
-  paragraph, its entropy. Temperature in, entropy out.
+- The top line of the screen shows the reading, `T` and the phase the text is in (SOLID, LIQUID, GAS); under the
+  text, the distribution each word was drawn from, as bars; after each paragraph, its entropy. Temperature in,
+  entropy out.
 - The BOOT button lets in **Maxwell's demon** (see below). He invented it; it seemed rude not to invite it.
 
 ## The physics, measured on this model
@@ -41,6 +42,24 @@ The same softmax in three rooms, after *"The temperature of a body is"*:
 
 At 0.1, "measured" gets 76% and one other word most of the rest. At 1.9, the favourite has 3.5%: nothing is sure
 of anything.
+
+### The same chart, on the chip, by hand
+
+Flash with `WORD="The temperature of a body is" ./flash.sh`, or type `?The temperature of a body is` into the serial
+monitor, and they stop writing. The screen holds that one sentence and draws the distribution of its next word a few
+times a second, at whatever the thermometer says right now: the 16 likeliest words as bars (the top of the plot is
+50%), the three likeliest by name, and on the last line one word actually drawn from it.
+
+![The screen in the room it woke up in, and with a finger on the sensor](charts/screen.png)
+
+Both screens are redrawn from the chip's own serial log, as is this:
+
+![The thermometer and the probabilities of the next word while a finger touches the sensor and lets go](charts/finger.svg)
+
+At 23.6 C "measured" has 27%. One finger on the sensor, and within ten seconds it is 27.5 C and "measured" has 7%:
+more than four fifths of the probability now sits on words that are not even in the top three. Then the sensor spends
+two minutes cooling down, and Maxwell slowly makes up his mind again. Held longer, at 29.2 C, the three likeliest
+words had 3% each.
 
 ![Entropy of each sampled word against temperature, with solid, liquid and gas phases](charts/entropy.svg)
 
@@ -123,8 +142,8 @@ loses the grammar. That is eight paragraphs per point, read by eye, so a first l
 If both modules have a μŠup connector (LaskaKit's do), click a μŠup cable from the SHT40 into the OLED and wire only
 the OLED to the board. Never 5 V on these pins: Maxwell runs at 3.3 V.
 
-No breadboard, and the display already sits on pins 18 and 8? Give the thermometer two pins of its own, say 4 and 5
-(SDA to 4, SCL to 5), and flash with `SHT=4,5 ./flash.sh`.
+No breadboard, and the display already sits on pins 18 and 8? Give the thermometer two pins of its own, any two free
+ones, say 4 and 5 (SDA to 4, SCL to 5), and flash with `SHT=4,5 ./flash.sh`.
 
 **Flash.** Everything is in this repo, the model too:
 
@@ -139,7 +158,9 @@ arduino-cli lib install "Adafruit SSD1306" "Adafruit GFX Library"
 - warm the SHT40 in your hand (it takes half a minute; thermometers are not in a hurry): they ramble, then switch languages;
 - cool it by three degrees (a window in November, or a cold glass next to it; keep it dry): they go stiff;
 - press the BOOT button: Maxwell's demon, on and off;
-- type a line into the serial monitor (115200 baud) and they continue your sentence instead.
+- type a line into the serial monitor (115200 baud) and they continue your sentence instead;
+- type a line that starts with a question mark, `?The temperature of a body is`, and they hold still on one word
+  (see "One word, on the screen" above).
 
 The thermometer calibrates itself: whatever room the chip wakes up in is "normal" (T = 0.7, liquid Maxwell), and
 every degree warmer or colder moves T by 0.2, between 0.05 and 2. Three degrees colder and they freeze; a hand, six
@@ -149,7 +170,7 @@ pressing RESET. Like the rest of us, they think the room they woke up in is how 
 **If it doesn't:**
 
 - screen dark: SDA and SCL swapped, or the OLED is an SH1106 (set `OLED_CONTROLLER` in `firmware/maxwell/display.h`);
-- the serial log says "no SHT40": the sensor isn't answering at 0x44 or 0x45, so they assume a polite 22 C forever and never change. Check the cable;
+- the serial log says "no SHT40": the sensor isn't answering at 0x44 or 0x45, so they assume a polite 22 C forever and never change. Check the cable, and push the little white plug all the way in: a sensor with its data wires connected but no power still answers its address, and then never finishes a measurement;
 - flashing fails: hold BOOT, press RESET, let go of BOOT, try again.
 
 ## The small print
@@ -174,8 +195,11 @@ pressing RESET. Like the rest of us, they think the room they woke up in is how 
 - Every paragraph on the chip is sampled fresh, word by word, at whatever the thermometer says right now. Nothing is
   recorded or replayed. At very low temperature the same start gives almost the same text, because that is what a
   cold distribution does.
-- Not yet tried on a real thermometer. The firmware compiles, the C runtime matches PyTorch on this model, and the
-  chip's own sampling code, run on a computer (`host/maxwell.c`), gives the entropies in the charts. The rest is physics.
+- Tried on a real board on 16 November 2026: an ESP32-S3 N16R8, an SSD1306 and an SHT40 on two pins of its own. It
+  writes about 4.6 tokens a second with the bars on. At T = 0.70 the chip gives the three likeliest words 27, 20 and
+  16%, where PyTorch gives 25, 21 and 16% (4-bit weights against 32-bit). It has only been warmed, by a finger: nobody
+  has cooled it yet, so SOLID has been seen on a computer and not on the chip. The entropy and mixing charts are
+  still the computer's (`host/maxwell.c`, `measure.py`).
 
 ## No chip?
 
@@ -214,7 +238,7 @@ python measure.py runs/ple-mb-s0-best.pt && python charts/draw.py   # the charts
 
 ## Want to help?
 
-See `CONTRIBUTING.md`: the short list of what is untested, and what I'd love to see. The first real thermometer is still up for grabs.
+See `CONTRIBUTING.md`: the short list of what is untested, and what I'd love to see. Nobody has frozen them on real hardware yet.
 
 ## Thanks
 

@@ -65,6 +65,36 @@ static int boltzmann_sample(const float *z, int V, float T, int k, float u, floa
   return pick;
 }
 
+// The picture of the same distribution: the n largest probabilities, largest first, into p[0..n). k as above (with
+// the demon at the door, everything past the k-th is 0). Returns the rank of `pick` in it (0 = the most probable
+// word), or n when the word that was picked lies further out in the tail.
+static int boltzmann_top(const float *z, int V, float T, int k, int pick, float *p, int n) {
+  float zmax = -1e30f;
+  for (int v = 0; v < V; v++) if (z[v] > zmax) zmax = z[v];
+  float sum = 0.f, prev = 1e30f;
+  int rank = 0;
+  for (int v = 0; v < V; v++) if (pick >= 0 && z[v] > z[pick]) rank++;
+  for (int j = 0; j < n; j++) {               // n short passes, each finds the next largest logit
+    float m = -1e30f;
+    for (int v = 0; v < V; v++) if (z[v] < prev && z[v] > m) m = z[v];
+    prev = m;
+    p[j] = (k > 0 && j >= k) || m < -1e29f ? 0.f : expf((m - zmax) / T);
+  }
+  float thr = -1e30f;                         // the same normalisation as boltzmann_sample
+  if (k > 0 && k < V) {
+    float q = 1e30f;
+    for (int j = 0; j < k; j++) {
+      float m = -1e30f;
+      for (int v = 0; v < V; v++) if (z[v] < q && z[v] > m) m = z[v];
+      q = m;
+    }
+    thr = q;
+  }
+  for (int v = 0; v < V; v++) if (z[v] >= thr) sum += expf((z[v] - zmax) / T);
+  for (int j = 0; j < n; j++) p[j] /= sum;
+  return rank < n ? rank : n;
+}
+
 // the first words of each paragraph the chip writes on its own; the rest is the model
 static const char *ROOM_STARTS[] = {
   "The temperature of a body is", "Die Temperatur eines Gases ist", "When a gas is compressed",

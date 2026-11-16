@@ -337,6 +337,9 @@ void setup() {
 
 #if USE_DISPLAY
   display_begin();
+#if defined(ROOM_TEMPERATURE)
+  display_bottom = ROOM_BARS_TOP - 3;   // the rows below belong to the distribution
+#endif
 #endif
 
   // The model header states how many logits it produces; vocab.h carries the
@@ -474,6 +477,10 @@ static void run_story(const int *prompt_ids, int n_prompt, float temp) {
       best = boltzmann_sample(s.logits, model.out_vocab, temp, room_demon ? DEMON_K : 0,
                               esp_random() / 4294967296.0f, &bits);
       entropy_bits += bits; entropy_n++;
+#if USE_DISPLAY
+      room_rank = boltzmann_top(s.logits, model.out_vocab, temp, room_demon ? DEMON_K : 0, best, room_p, ROOM_BARS);
+      display_hold = true;              // the word and its distribution go to the screen in one frame
+#endif
     }
 #else
     if (temp > 0.0f) {
@@ -496,6 +503,11 @@ static void run_story(const int *prompt_ids, int n_prompt, float temp) {
     tok = best;
     if (tok == eot_id) break;       // the document ended; do not start another
     emit(tok);
+#if defined(ROOM_TEMPERATURE) && USE_DISPLAY
+    room_bars(room_p, room_rank);       // under the word, the distribution it was drawn from
+    display_hold = false;
+    oled.display();
+#endif
     blink((step & 1) ? 40 : 8);
 
     int64_t d0 = esp_timer_get_time();
@@ -513,6 +525,9 @@ static void run_story(const int *prompt_ids, int n_prompt, float temp) {
     }
   }
   int64_t total_us = esp_timer_get_time() - t_start;
+#if USE_DISPLAY
+  display_hold = false;
+#endif
 
   Serial.printf("\n\n--- %d tokens in %.2f s ---\n", decoded, total_us / 1e6);
   Serial.printf("throughput: %.2f tok/s   (%.1f ms/token)\n",
@@ -566,6 +581,88 @@ static void prompt_story(const char *text) {
   run_story(ids, n, 0.0f);
 }
 
+#if __has_include("generated/one_word.h")
+#include "generated/one_word.h"         // flash.sh writes it for WORD="..."
+#endif
+#if defined(ROOM_TEMPERATURE) && USE_DISPLAY
+// One word, held still. A typed line that starts with "?" ("?The temperature of a body is") is not continued: the
+// screen shows the distribution of the next word only, the way a softmax is always drawn: the 16 most probable words
+// along x, probability up y (the full height is 50%, marked; a taller bar is cut there and its number still says how
+// much), redrawn a few times a second at the temperature the thermometer reads right now. Cold, one bar towers; in a
+// warm hand they sink into a flat row. The three likeliest words are
+// named, the tick under the axis marks the word just drawn, and the last line reads the sentence with it.
+// Any other typed line ends it.
+static void word_label(int tok, char *out, int n) {     // the token's text without its leading space
+  const unsigned char *b = VOCAB_BLOB + VOCAB_OFF[tok];
+  int len = VOCAB_OFF[tok + 1] - VOCAB_OFF[tok], k = 0;
+  for (int i = 0; i < len && k < n - 1; i++) {
+    char c = (char)b[i];
+    if (k == 0 && c == ' ') continue;
+    if (c >= 33 && c < 127) out[k++] = c;
+  }
+  out[k] = 0;
+}
+static void one_word(const char *text) {
+  uint16_t enc[96];
+  int n = bpe_encode_ascii(&tokenizer, text, enc, (int)(sizeof(enc) / sizeof(enc[0])));
+  if (n <= 0) { Serial.println("(ascii only, or prompt too long)"); return; }
+  for (int i = 0; i < n; i++) llm_forward(&model, enc[i], i, &s);
+  const int V = model.out_vocab, NTOP = 16, NNAMED = 3;
+  const int Y0 = CH + 4, YAXIS = 53, HMAX = YAXIS - Y0;   // the plot: rows 12..52, the axis on row 53
+  int top[NTOP];
+  for (int j = 0; j < NTOP; j++) {                       // the largest logits; the temperature never reorders them
+    int b = -1;
+    for (int v = 0; v < V; v++) {
+      bool taken = false;
+      for (int q = 0; q < j; q++) if (top[q] == v) taken = true;
+      if (!taken && (b < 0 || s.logits[v] > s.logits[b])) b = v;
+    }
+    top[j] = b;
+  }
+  char label[NNAMED][13];
+  for (int j = 0; j < NNAMED; j++) word_label(top[j], label[j], sizeof label[j]);
+  const char *tail = text + strlen(text);                // the last words of the sentence that fit beside the drawn one
+  while (tail > text && strlen(tail) < 9) { const char *p = tail - 1; while (p > text && p[-1] != ' ') p--; if (strlen(p) > 9) break; tail = p; }
+  Serial.printf("\none word after \"%s\"\n", text);
+  unsigned long said = 0;
+  while (!poll_serial_line()) {
+    float T = room_softmax_temp();
+    float zmax = s.logits[top[0]], sum = 0.f, p[NTOP], rest = 1.f;
+    for (int v = 0; v < V; v++) sum += expf((s.logits[v] - zmax) / T);
+    for (int j = 0; j < NTOP; j++) { p[j] = expf((s.logits[top[j]] - zmax) / T) / sum; rest -= p[j]; }
+    if (rest < 0.f) rest = 0.f;
+    int pick = boltzmann_sample(s.logits, V, T, 0, esp_random() / 4294967296.0f, nullptr);
+    char drawn[13]; word_label(pick, drawn, sizeof drawn);
+    oled.clearDisplay();
+    room_header();                                       // the reading, T and the phase
+    char row[24];
+    for (int j = 0; j < NTOP; j++) {                     // the bars, 6 wide, 2 apart
+      int h = (int)(p[j] / 0.5f * HMAX + 0.5f);          // the full height is 50%
+      if (h < 1) h = 1;
+      if (h > HMAX) h = HMAX;
+      oled.fillRect(j * 8, YAXIS - h, 6, h, OLED_WHITE);
+    }
+    oled.drawFastHLine(0, YAXIS, SCR_W, OLED_WHITE);
+    for (int j = 0; j < NTOP; j++) if (top[j] == pick) oled.fillRect(j * 8 + 1, YAXIS + 1, 4, 2, OLED_WHITE);
+    oled.setCursor(SCR_W - 3 * CW, Y0); oled.print("50%");  // what the top of the plot stands for
+    for (int j = 0; j < NNAMED; j++) {                   // the three likeliest, named, in the empty corner of the plot
+      int nrow = snprintf(row, sizeof row, "%s %d%%", label[j], (int)(p[j] * 100 + 0.5f));
+      oled.setCursor(SCR_W - nrow * CW, Y0 + 2 + (j + 1) * CH); oled.print(row);
+    }
+    snprintf(row, sizeof row, "%s %s", tail, drawn);
+    oled.setCursor(0, 56); oled.print(row);
+    oled.display();
+    if (millis() - said > 2000) {
+      said = millis();
+      Serial.printf("%.1f C T=%.2f:", room_c, T);   // the whole picture as text, for whoever is logging it
+      for (int j = 0; j < NTOP; j++) { char w[13]; word_label(top[j], w, sizeof w); Serial.printf(" %s=%.3f", w, p[j]); }
+      Serial.printf(" rest=%.3f -> %s\n", rest, drawn);
+    }
+    delay(400);
+  }
+}
+#endif
+
 // Standalone gadget mode with an ear: poll for a typed prompt continuously -
 // including BETWEEN decode steps, so a prompt interrupts the current story
 // within a token instead of sitting in the FIFO until it ends. Idle ~20 s
@@ -573,8 +670,15 @@ static void prompt_story(const char *text) {
 void loop() {
   if (poll_serial_line()) {
     pending_ready = false;
+#if defined(ROOM_TEMPERATURE) && USE_DISPLAY
+    if (pending_line[0] == '?') one_word(pending_line + 1); else
+#endif
     prompt_story(pending_line);
   }
+#if defined(ROOM_WORD) && USE_DISPLAY
+  static bool word_shown = false;       // flashed with WORD="...": start on that one word; a typed line ends it
+  if (!word_shown) { word_shown = true; one_word(ROOM_WORD); return; }
+#endif
 #if defined(ROOM_TEMPERATURE)
   // nothing typed: the next paragraph, a few seconds after the last one ended
   static unsigned long room_resume = 0;

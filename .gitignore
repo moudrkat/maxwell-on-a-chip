@@ -4,3 +4,5 @@ __pycache__/
 build/
 runs/
 host/maxwell
+firmware/maxwell/generated/sht_pins.h
+firmware/maxwell/generated/one_word.h
